@@ -7,6 +7,6 @@
 This repository contains all the files related to the project to create a drift game and other various buys.
 
 ## Contributors ##
-+  Alexander Nikitin
++  [Alexander Nikitin](https://github.com/FleshMiX)
 +  [Nechaev Nikita](https://github.com/Nikytka)
 +  [Botan Botanskyi](https://github.com/OborotovMikhail)
