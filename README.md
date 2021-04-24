@@ -1,6 +1,6 @@
-# Drift_fonk_project #
+# Drift_phonk_project #
 
- Game development repository (cars, money, cash, wenches, cutlets, coins, bills, fonk)
+ Game development repository (cars, money, cash, wenches, cutlets, coins, bills, phonk)
 
 
 ## INFO ##  
