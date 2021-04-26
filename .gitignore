@@ -28,6 +28,8 @@ x86/
 [Aa][Rr][Mm]64/
 bld/
 #[Bb]in/
+[Bb]uild/
+.build/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
