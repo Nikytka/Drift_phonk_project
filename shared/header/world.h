@@ -19,7 +19,6 @@ class World
     static const int WORLD_HEIGHT = 800; // World y span
 
     std::unordered_map<PlayerId, Player> players; // Players map
-    Target target; // Target class object
 
     Scene GameScene = Scene::Lobby;
 
@@ -31,8 +30,6 @@ public:
     void update(float dt); // Update world function (Updates all players positions)
     
     std::unordered_map<PlayerId, Player>& get_players(); // Get players map
-    
-    Target& get_target(); // Get target
     
     sf::Vector2f get_random_pos(); // Get random position on map
     

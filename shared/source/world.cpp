@@ -18,11 +18,6 @@ std::unordered_map<PlayerId, Player>& World::get_players()
     return this->players;
 }
 
-Target& World::get_target()
-{
-    return this->target;
-}
-
 sf::Vector2f World::get_random_pos()
 {
     // Generating random position on the map

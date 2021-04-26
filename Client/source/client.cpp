@@ -68,11 +68,6 @@ void Client::recieve()
                     }
                 }
 
-                // Updating target position
-                sf::Vector2f target_pos;
-                packet >> target_pos.x >> target_pos.y;
-                world.get_target().set_pos(target_pos);
-
                 // Getting elapsed server time from packet
                 float ts;
                 packet >> ts;

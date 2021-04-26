@@ -20,10 +20,6 @@ Server::Server(int port, World& world) :
         return;
     }
 
-    sf::Vector2f new_pos = world.get_random_pos();
-
-    world.get_target().set_pos(new_pos); // Creating first target
-
     // Creating and detaching a thread for receiving packets
     syncThread = std::thread(&Server::receive, this);
     syncThread.detach();
@@ -334,19 +330,6 @@ void Server::update(float dt)
         it.second.update(dt);
     }
 
-    // Checking if anybody reached the target
-    for (auto& it : world.get_players())
-    {
-        if (sqrt(pow((world.get_target().get_pos().x - it.second.get_pos().x), 2) 
-            + pow((world.get_target().get_pos().y - it.second.get_pos().y), 2)) < it.second.get_rad())
-        {
-            world.get_target().set_pos(world.get_random_pos()); // Setting new target pos
-            it.second.increase_score(); // Increasing player score
-
-            dirty = true; // Server dirty now
-        }
-    }
-
     // Checking if anybody won the game
     for (auto& it : world.get_players())
     {
@@ -391,10 +374,6 @@ void Server::synchronize()
         toSend << elem.first << elem.second.get_pos().x << elem.second.get_pos().y <<
             elem.second.get_vel().x << elem.second.get_vel().y << elem.second.get_score();
     }
-
-    // Pushing target position to packet
-    toSend << world.get_target().get_pos().x;
-    toSend << world.get_target().get_pos().y;
 
     // Pushing server elapsed time to packet
     toSend << clock.getElapsedTime().asSeconds();

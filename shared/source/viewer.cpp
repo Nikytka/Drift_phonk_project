@@ -102,14 +102,6 @@ void Viewer::draw_gameplay(World& world)
         sf::RenderWindow::draw(player_model); // Draw
     }
 
-    sf::Text target_text;
-    target_text.setFont(font);
-    target_text.setColor(sf::Color::White);
-    target_text.setString("OTL10");
-    target_text.setOrigin(target_text.getGlobalBounds().width / 2.0f, target_text.getGlobalBounds().height / 2.0f);
-    target_text.setPosition(world.get_target().get_pos());
-    sf::RenderWindow::draw(target_text); // Draw
-
     // Displaying
     display();
 }

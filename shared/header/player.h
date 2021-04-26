@@ -13,7 +13,7 @@ class Player
     bool winner = false; // Did the player reach endgame score
     bool ready = false; // If player is ready to play (in game lobby)
 
-    int selected_car_id = 1; // Id number of a selected car
+    int selected_car_id = 0; // Id number of a selected car
     bool is_car_selected = false; // Did the player select a car to play
 
     sf::Vector2f pos; // Position
