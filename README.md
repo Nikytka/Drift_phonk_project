@@ -9,4 +9,4 @@ This repository contains all the files related to the project to create a drift 
 ## Contributors ##
 +  [Alexander Nikitin](https://github.com/FleshMiX)
 +  [Nechaev Nikita](https://github.com/Nikytka)
-+  [Botan Botanskyi](https://github.com/OborotovMikhail)
++  [Oborotov Mikhail](https://github.com/OborotovMikhail)
