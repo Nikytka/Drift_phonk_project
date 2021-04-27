@@ -31,7 +31,7 @@ public:
 
     float get_rad(); // Get player radius
     
-    bool IfReady(); // If player is ready to play (in game lobby)
+    bool isReady(); // Is the player ready to play (in game lobby)
     
     sf::Vector2f get_controls(); // Get player controls
     void set_controls(sf::Vector2f controls); // Set player controls

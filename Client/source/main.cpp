@@ -31,11 +31,11 @@ int main()
         }
 
         // Hero selection scene
-        if (world.GetScene() == Scene::HeroSelection)
+        if (world.GetScene() == Scene::CarSelection)
         {
             viewer.handleEvents();
-            client.events_hero_selection(viewer);
-            viewer.draw_hero_selection(world);
+            client.events_car_selection(viewer);
+            viewer.draw_car_selection(world);
         }
 
         // Gameplay scene

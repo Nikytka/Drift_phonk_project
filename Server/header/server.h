@@ -24,6 +24,7 @@ class Server
     SafeQueue<sf::Packet> receivedPackets; // Recieved packets (from clients)
 
     std::thread syncThread; // Thread
+
     std::mutex newPlayerMutex; // Player mutex
     sf::Clock clock; // Clock
 
@@ -38,10 +39,11 @@ public:
     ~Server(); // Server destructor
     
     bool isRunning() const; // Is server running function
+    bool isDirty(); // Is server dirty
     
-    void update(float dt); // Updating players with data from packets
+    void process_packets(); // Process incoming packets
 
-    void synchronize(); // Synchronizing with all clients (sending up-to-date data from server)
+    void update(float dt); // Updating world
 
-    bool IsDirty(); // Is server dirty
+    void update_clients(); // Synchronizing with all clients (sending up-to-date data from server)
 };

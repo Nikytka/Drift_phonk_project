@@ -40,6 +40,11 @@ bool Server::isRunning() const
     return running;
 }
 
+bool Server::isDirty()
+{
+    return this->dirty;
+}
+
 void Server::receive()
 {
     selector.add(listener);
@@ -125,7 +130,7 @@ void Server::receive()
     }
 }
 
-void Server::update(float dt)
+void Server::process_packets()
 {
     while (!receivedPackets.empty())
     {
@@ -189,7 +194,7 @@ void Server::update(float dt)
             int number_of_ready_players = 0;
             for (auto& it : world.get_players())
             {
-                if (it.second.IfReady())
+                if (it.second.isReady())
                 {
                     number_of_ready_players++;
                 }
@@ -216,7 +221,10 @@ void Server::update(float dt)
             }
         }
     }
+}
 
+void Server::update(float dt)
+{
     // Updating player's speed based on player controls
     for (auto& it : world.get_players())
     {
@@ -331,7 +339,7 @@ void Server::update(float dt)
     }
 }
 
-void Server::synchronize()
+void Server::update_clients()
 {
     // If server is not dirty
     if (!dirty)
@@ -362,9 +370,3 @@ void Server::synchronize()
         }
     }
 }
-
-bool Server::IsDirty()
-{
-    return this->dirty;
-}
-

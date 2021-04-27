@@ -20,15 +20,17 @@ int main()
     {
         viewer.handleEvents(); // Handling events
 
+        server.process_packets();
+
         auto dt = gameClock.restart(); // Calculating dt
         server.update(dt.asSeconds()); // Updating
 
         tick += dt;
 
         // Synchronizing clients if needed
-        if (tick.asMilliseconds() > 1000 || server.IsDirty())
+        if (tick.asMilliseconds() > 1000 || server.isDirty())
         {
-            server.synchronize();
+            server.update_clients();
             tick = sf::Time();
         }
 

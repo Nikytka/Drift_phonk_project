@@ -3,6 +3,6 @@
 enum class Scene
 {
 	Lobby,
-	HeroSelection,
+	CarSelection,
 	Gameplay
 };

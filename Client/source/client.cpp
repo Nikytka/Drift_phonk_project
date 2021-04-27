@@ -179,7 +179,7 @@ void Client::events_lobby(Viewer& viewer)
     // Pressing ready button
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_lobby_selected_button() == 0))
     {
-        if (!world.get_players()[clientId].IfReady())
+        if (!world.get_players()[clientId].isReady())
         {
             debug("Ready");
             world.get_players()[this->clientId].player_ready();
@@ -201,7 +201,7 @@ void Client::events_lobby(Viewer& viewer)
     // Pressing hero selection button
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_lobby_selected_button() == 1))
     {
-        world.SetScene(Scene::HeroSelection);
+        world.SetScene(Scene::CarSelection);
     }
 
     // Pressing disconnect button
@@ -212,7 +212,7 @@ void Client::events_lobby(Viewer& viewer)
     }
 }
 
-void Client::events_hero_selection(Viewer& viewer)
+void Client::events_car_selection(Viewer& viewer)
 {
     // ESC to get back to lobby
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))

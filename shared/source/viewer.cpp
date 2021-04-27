@@ -23,7 +23,7 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 80
         lobby_buttons[i].setFont(font);
     }
     lobby_buttons[0].setString("ready");
-    lobby_buttons[1].setString("pick hero");
+    lobby_buttons[1].setString("select car");
     lobby_buttons[2].setString("disconnect");
     for (int i = 0; i < NUMBER_OF_LOBBY_BUTTONS; i++)
     {
@@ -75,7 +75,7 @@ void Viewer::draw_lobby(World& world)
     display();
 }
 
-void Viewer::draw_hero_selection(World& world)
+void Viewer::draw_car_selection(World& world)
 {
     // Setting black color as a background
     clear(sf::Color::Black);

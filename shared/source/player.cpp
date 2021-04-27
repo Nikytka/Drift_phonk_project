@@ -38,7 +38,7 @@ void Player::set_vel(sf::Vector2f vel)
 	this->v = vel;
 }
 
-bool Player::IfReady()
+bool Player::isReady()
 {
 	return this->ready;
 }
