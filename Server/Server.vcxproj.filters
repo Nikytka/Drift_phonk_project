@@ -27,9 +27,6 @@
     <ClCompile Include="..\shared\source\player.cpp">
       <Filter>shared\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\source\target.cpp">
-      <Filter>shared\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\shared\source\viewer.cpp">
       <Filter>shared\source</Filter>
     </ClCompile>
@@ -48,9 +45,6 @@
       <Filter>shared\header</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\header\scene.h">
-      <Filter>shared\header</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\header\target.h">
       <Filter>shared\header</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\header\viewer.h">

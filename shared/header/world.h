@@ -6,7 +6,6 @@
 #include <random>
 
 #include "player.h"
-#include "target.h"
 #include "scene.h"
 
 // Player id type
@@ -20,9 +19,7 @@ class World
 
     std::unordered_map<PlayerId, Player> players; // Players map
 
-    Scene GameScene = Scene::Lobby;
-
-    PlayerId winner_id = -1; // Winner id
+    Scene GameScene = Scene::Lobby; // Default scene is lobby
 
 public:
     std::mutex mutex; // Mutex

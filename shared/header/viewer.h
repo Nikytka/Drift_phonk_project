@@ -9,8 +9,8 @@ class Viewer : public sf::RenderWindow
     const int VIEWER_WIDTH = 800;
     const int VIEWER_HEIGHT = 800;
 
-    const int NUMBER_OF_HEROES = 3;
-    std::map<int, sf::Texture> player_textures; // Map of player textures
+    const int NUMBER_OF_CARS = 3;
+    std::map<int, sf::Texture> car_textures; // Map of car textures
 
     sf::Font font; // Text font
 
@@ -26,7 +26,6 @@ public:
     void draw_lobby(World& world); // Draw lobby function
     void draw_hero_selection(World& world); // Draw hero selection screen
     void draw_gameplay(World& world); // Draw world during the game
-    void draw_gameover(); // Draw endgame screen
     
     int get_lobby_selected_button(); // Get selected lobby button
     void set_lobby_selected_button(int button); // Set selected lobby button

@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\shared\source\player.cpp" />
-    <ClCompile Include="..\shared\source\target.cpp" />
     <ClCompile Include="..\shared\source\viewer.cpp" />
     <ClCompile Include="..\shared\source\world.cpp" />
     <ClCompile Include="source\client.cpp" />
@@ -31,7 +30,6 @@
     <ClInclude Include="..\shared\header\network.h" />
     <ClInclude Include="..\shared\header\player.h" />
     <ClInclude Include="..\shared\header\scene.h" />
-    <ClInclude Include="..\shared\header\target.h" />
     <ClInclude Include="..\shared\header\viewer.h" />
     <ClInclude Include="..\shared\header\world.h" />
     <ClInclude Include="header\client.h" />

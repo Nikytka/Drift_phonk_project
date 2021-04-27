@@ -27,12 +27,6 @@
     <ClCompile Include="..\shared\source\player.cpp">
       <Filter>shared\source</Filter>
     </ClCompile>
-    <ClCompile Include="..\shared\source\target.cpp">
-      <Filter>shared\source</Filter>
-    </ClCompile>
-    <ClCompile Include="..\shared\source\viewer.cpp">
-      <Filter>shared\source</Filter>
-    </ClCompile>
     <ClCompile Include="..\shared\source\world.cpp">
       <Filter>shared\source</Filter>
     </ClCompile>
@@ -41,6 +35,9 @@
     </ClCompile>
     <ClCompile Include="source\controls.cpp">
       <Filter>this project\source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\shared\source\viewer.cpp">
+      <Filter>shared\source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,9 +48,6 @@
       <Filter>shared\header</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\header\scene.h">
-      <Filter>shared\header</Filter>
-    </ClInclude>
-    <ClInclude Include="..\shared\header\target.h">
       <Filter>shared\header</Filter>
     </ClInclude>
     <ClInclude Include="..\shared\header\viewer.h">

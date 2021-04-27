@@ -5,9 +5,9 @@
 Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 800), name)
 {
     // Loading player textures
-    this->player_textures[0].loadFromFile("hero0.png");
-    this->player_textures[1].loadFromFile("hero1.png");
-    this->player_textures[2].loadFromFile("hero2.png");
+    this->car_textures[0].loadFromFile("car_0.png");
+    this->car_textures[1].loadFromFile("car_1.png");
+    this->car_textures[2].loadFromFile("car_2.png");
 
     // Loading font
     if (!font.loadFromFile("PressStart2P.ttf"))
@@ -94,30 +94,13 @@ void Viewer::draw_gameplay(World& world)
     // Drawing players
     for (auto& it : world.get_players())
     {
-        sf::Sprite player_model(this->player_textures[it.second.get_selected_car()]); // Set texture
+        sf::Sprite player_model(this->car_textures[it.second.get_selected_car()]); // Set texture
         auto player_rect = player_model.getGlobalBounds();
         player_model.setOrigin(player_rect.width / 2.0f, player_rect.height / 2.0f); // Set sprite origin
         player_model.setPosition(it.second.get_pos()); // Set position
         player_model.setScale({ 0.7f, 0.7f });
         sf::RenderWindow::draw(player_model); // Draw
     }
-
-    // Displaying
-    display();
-}
-
-void Viewer::draw_gameover()
-{
-    // Setting black color as a background
-    clear(sf::Color::Black);
-
-    sf::Text gameover_text;
-    gameover_text.setFont(font);
-    gameover_text.setColor(sf::Color::White);
-    gameover_text.setString("BOTANIX");
-    gameover_text.setOrigin(gameover_text.getGlobalBounds().width / 2.0f, gameover_text.getGlobalBounds().height / 2.0f);
-    gameover_text.setPosition({ float(VIEWER_WIDTH) / 2.0f, float(VIEWER_HEIGHT) / 2.0f });
-    sf::RenderWindow::draw(gameover_text); // Draw
 
     // Displaying
     display();

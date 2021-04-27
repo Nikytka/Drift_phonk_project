@@ -5,7 +5,7 @@ enum Message
 	ClientCreated,
 	ClientDisconnect,
 	ClientReady,
-	ClientHeroSelected,
+	ClientCarSelected,
 	UpdateWorld,
 	Movement,
 	SceneGameplay,
