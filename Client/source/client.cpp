@@ -57,14 +57,13 @@ void Client::recieve()
 
                     for (int i = 0; i < n; ++i)
                     {
-                        int index, score; // Player id
+                        int index; // Player id
                         sf::Vector2f pos, v; // Positon and velocity from server
 
-                        packet >> index >> pos.x >> pos.y >> v.x >> v.y >> score;
+                        packet >> index >> pos.x >> pos.y >> v.x >> v.y;
 
                         world.get_players()[index].set_pos(pos); // Updating position for players
                         world.get_players()[index].set_vel(v); // Updating velocity for players
-                        world.get_players()[index].set_score(score); // Set player score
                     }
                 }
 
@@ -94,18 +93,6 @@ void Client::recieve()
                 world.SetScene(Scene::Gameplay);
 
                 std::cout << "Started the game" << std::endl;
-            }
-
-            // Gameover scene packet processing
-            if (type == Message::SceneGameover)
-            {
-                int id;
-                packet >> id;
-
-                world.SetScene(Scene::Gameover);
-                world.get_players()[id].won_the_game();
-
-                std::cout << "Player " << id << " won the game\n";
             }
         }
     }

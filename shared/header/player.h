@@ -6,11 +6,8 @@
 class Player
 {
     const float RADIUS = 100.0f; // Player radius
-    const int FINAL_SCORE = 3; // Score needed to win the game
     const float SPEED = 300.0f; // Pixels per second, used as a reference to calculate velocity
 
-    int score = 0; // Player score, starting score is 0
-    bool winner = false; // Did the player reach endgame score
     bool ready = false; // If player is ready to play (in game lobby)
 
     int selected_car_id = 0; // Id number of a selected car
@@ -33,15 +30,6 @@ public:
     void set_vel(sf::Vector2f vel); // Update player velocity to new value
 
     float get_rad(); // Get player radius
-    
-    void increase_score(); // Increase player score
-    int get_score(); // Get player score
-    void set_score(int score); // Set player score
-
-    bool IfWinner(); // Did the player reach the score needed to win
-
-    void won_the_game(); // This player won the game
-    void no_longer_winner(); // Make this player no longer winner
     
     bool IfReady(); // If player is ready to play (in game lobby)
     

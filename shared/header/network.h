@@ -9,6 +9,5 @@ enum Message
 	UpdateWorld,
 	Movement,
 	SceneGameplay,
-	SceneGameover,
 	RemovePlayer
 };

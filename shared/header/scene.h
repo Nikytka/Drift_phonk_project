@@ -4,6 +4,5 @@ enum class Scene
 {
 	Lobby,
 	HeroSelection,
-	Gameplay,
-	Gameover
+	Gameplay
 };

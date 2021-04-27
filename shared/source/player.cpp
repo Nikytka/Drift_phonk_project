@@ -38,40 +38,6 @@ void Player::set_vel(sf::Vector2f vel)
 	this->v = vel;
 }
 
-void Player::increase_score()
-{
-	this->score++;
-	if (this->score == FINAL_SCORE)
-	{
-		this->winner = true;
-	}
-}
-
-int Player::get_score()
-{
-	return this->score;
-}
-
-void Player::set_score(int score)
-{
-	this->score = score;
-}
-
-bool Player::IfWinner()
-{
-	return this->winner;
-}
-
-void Player::won_the_game()
-{
-	this->winner = true;
-}
-
-void Player::no_longer_winner()
-{
-	this->winner = false;
-}
-
 bool Player::IfReady()
 {
 	return this->ready;

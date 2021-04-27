@@ -329,31 +329,6 @@ void Server::update(float dt)
     {
         it.second.update(dt);
     }
-
-    // Checking if anybody won the game
-    for (auto& it : world.get_players())
-    {
-        if (it.second.IfWinner())
-        {
-            world.SetScene(Scene::Gameover);
-            it.second.won_the_game();
-
-            sf::Packet toSend; // Forming packet
-            toSend << Message::SceneGameover << it.first; // Sending id of the winner
-
-            for (const auto& elem : this->sockets)
-            {
-                if (elem.second->send(toSend) != sf::Socket::Done)
-                {
-                    std::cout << "Can't send gameover scene packet to player " << elem.first << " \n";
-                }
-            }
-
-            it.second.no_longer_winner();
-
-            break;
-        }
-    }
 }
 
 void Server::synchronize()
@@ -372,7 +347,7 @@ void Server::synchronize()
     {
         // Players position and velocity to packet
         toSend << elem.first << elem.second.get_pos().x << elem.second.get_pos().y <<
-            elem.second.get_vel().x << elem.second.get_vel().y << elem.second.get_score();
+            elem.second.get_vel().x << elem.second.get_vel().y;
     }
 
     // Pushing server elapsed time to packet

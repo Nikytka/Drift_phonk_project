@@ -73,13 +73,6 @@ int main()
             // Drawing world
             viewer.draw_gameplay(world);
         }
-
-        // Gameover scene
-        if (world.GetScene() == Scene::Gameover)
-        {
-            viewer.handleEvents();
-            viewer.draw_gameover();
-        }
     }
 
     return 0;
