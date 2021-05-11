@@ -98,10 +98,11 @@ void Viewer::draw_gameplay(World& world)
         sf::Sprite player_model(this->car_textures[it.second.get_selected_car()]); // Set texture
         //player_model.setRotation(180);
         auto player_rect = player_model.getGlobalBounds();
-        player_model.setOrigin(player_rect.width / 2.0f, player_rect.height / 2.0f); // Set sprite origin
+        //if ( )
+        player_model.setOrigin(player_rect.width / 2.0f, player_rect.height / 1.6f); // Set sprite origin
         player_model.setPosition(it.second.get_pos()); // Set position
         player_model.setScale({ 0.7f, 0.7f });
-        player_model.setRotation(it.second.get_angle()-90);
+        player_model.setRotation(it.second.get_angle() - 90);
         sf::RenderWindow::draw(player_model); // Draw
     }
 

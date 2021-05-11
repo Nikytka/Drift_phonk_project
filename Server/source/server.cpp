@@ -3,6 +3,8 @@
 #include "server.h"
 
 const float PI = 3.141592;
+const float forw_acc = 4;
+const float back_acc = 1;
 
 Server::Server(int port, World& world) :
     port(port),
@@ -237,103 +239,63 @@ void Server::update(float dt)
       
         if ((0 < it.second.get_pos().x) && (it.second.get_pos().x < world.get_size().x) && (0 < it.second.get_pos().y) && (it.second.get_pos().y < world.get_size().y))
         {
-            velocity.x = it.second.get_controls().y * it.second.get_maxspeed() * cos(it.second.get_angle() / 180 * PI);
-            velocity.y = it.second.get_controls().y * it.second.get_maxspeed() * sin(it.second.get_angle() / 180 *  PI);
+            velocity.x = it.second.get_vel().x + (it.second.get_controls().y * forw_acc) * cos(it.second.get_angle() * PI / 180 ); //- back_acc * (it.second.get_vel().x > 0 ? 1 : (it.second.get_vel().x < 0 ? -1 : 0)) * abs(sin(it.second.get_angle() / 180 * PI));
+            velocity.y = it.second.get_vel().y + (it.second.get_controls().y * forw_acc) * sin(it.second.get_angle() * PI / 180); //- back_acc * (it.second.get_vel().y > 0 ? 1 : (it.second.get_vel().y < 0 ? -1 : 0)) * abs(cos(it.second.get_angle() / 180 * PI));
+            if (it.second.get_vel().x != 0 || it.second.get_vel().y != 0) {
+                velocity.x -= back_acc  * it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2)) + (it.second.get_vel().x > 0 ? 1 : (it.second.get_vel().x < 0 ? -1 : 0)) * back_acc * abs(cos((it.second.get_angle() - 90 )* PI/ 180)) ;
+                velocity.y -= back_acc  * it.second.get_vel().y / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2)) + (it.second.get_vel().y > 0 ? 1 : (it.second.get_vel().y < 0 ? -1 : 0)) * back_acc * abs(sin((it.second.get_angle() - 90) * PI / 180));
+            }
+            std::cout << it.second.get_vel().y << " ";
         }
         // On the left border
-        if (it.second.get_pos().x == 0)
-        {
-            if (it.second.get_controls().x > 0.0f)
-            {
-                velocity.x = it.second.get_controls().x * it.second.get_maxspeed();
-            }
-            else
-            {
-                velocity.x = 0;
-            }
-        }
-        // Outside the left border
-        if (it.second.get_pos().x < 0.0f)
+        if (it.second.get_pos().x <= 0)
         {
             sf::Vector2f new_pos;
             new_pos.x = 0.0f;
             new_pos.y = it.second.get_pos().y;
             it.second.set_pos(new_pos);
+            velocity.x = -it.second.get_vel().x;
+
         }
+        
         // On the right border
-        if (it.second.get_pos().x == world.get_size().x)
-        {
-            if (it.second.get_controls().x < 0.0f)
-            {
-                velocity.x = it.second.get_controls().x * it.second.get_maxspeed();
-            }
-            else
-            {
-                velocity.x = 0;
-            }
-        }
-        // Outside the right border
-        if (it.second.get_pos().x > world.get_size().x)
+        if (it.second.get_pos().x >= world.get_size().x)
         {
             sf::Vector2f new_pos;
             new_pos.x = world.get_size().x;
             new_pos.y = it.second.get_pos().y;
             it.second.set_pos(new_pos);
+            velocity.x = -it.second.get_vel().x;
         }
 
         // Y axis velocity
         // On the top border
-        if (it.second.get_pos().y == 0)
-        {
-            if (it.second.get_controls().y > 0.0f)
-            {
-                velocity.y = it.second.get_controls().y * it.second.get_maxspeed();
-            }
-            else
-            {
-                velocity.y = 0;
-            }
-        }
-        // Outside the top border
-        if (it.second.get_pos().y < 0.0f)
+        if (it.second.get_pos().y <= 0)
         {
             sf::Vector2f new_pos;
-            new_pos.x = it.second.get_pos().x;
             new_pos.y = 0.0f;
+            new_pos.x = it.second.get_pos().x;
             it.second.set_pos(new_pos);
+            velocity.y = -it.second.get_vel().y;
         }
+        
         // On the bottom border
-        if (it.second.get_pos().y == world.get_size().y)
-        {
-            if (it.second.get_controls().y < 0.0f)
-            {
-                velocity.y = it.second.get_controls().y * it.second.get_maxspeed();
-            }
-            else
-            {
-                velocity.y = 0;
-            }
-        }
-        // Outside the bottom border
-        if (it.second.get_pos().y > world.get_size().y)
+        if (it.second.get_pos().y >= world.get_size().y)
         {
             sf::Vector2f new_pos;
             new_pos.x = it.second.get_pos().x;
             new_pos.y = world.get_size().y;
             it.second.set_pos(new_pos);
-        }
+            velocity.y = -it.second.get_vel().y;
+        }      
 
+        it.second.set_vel(velocity);
+        this->dirty = true;
 
-        // Checking if the velocity has changed
-            if ((it.second.get_vel() != velocity || it.second.get_controls().x != 0) && it.second.get_controls().y == 0)
-            {
-            it.second.set_vel({0, 0});
-            this->dirty = true; // Server is dirty if not the same velocity as used to be
-        }
-        else if (it.second.get_vel() != velocity || it.second.get_controls().x != 0) {
-            it.second.set_vel(velocity);
+        // Checking if the angle has changed
+        if ((sqrt(pow(it.second.get_vel().x,2)+pow(it.second.get_vel().y, 2)) !=0 )&& it.second.get_controls().x != 0)
+        {
             it.second.add_angle(it.second.get_controls().x, it.second.get_controls().y);
-            this->dirty = true; // Server is dirty if not the same velocity as used to be
         }
     }
 
