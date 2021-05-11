@@ -2,6 +2,8 @@
 
 #include "server.h"
 
+const float PI = 3.141592;
+
 Server::Server(int port, World& world) :
     port(port),
     world(world)
@@ -232,9 +234,11 @@ void Server::update(float dt)
 
         // X axis velocity
         // Inside the world
-        if ((0 < it.second.get_pos().x) && (it.second.get_pos().x < world.get_size().x))
+      
+        if ((0 < it.second.get_pos().x) && (it.second.get_pos().x < world.get_size().x) && (0 < it.second.get_pos().y) && (it.second.get_pos().y < world.get_size().y))
         {
-            velocity.x = it.second.get_controls().x * it.second.get_maxspeed();
+            velocity.x = it.second.get_controls().y * it.second.get_maxspeed() * cos(it.second.get_angle() / 180 * PI);
+            velocity.y = it.second.get_controls().y * it.second.get_maxspeed() * sin(it.second.get_angle() / 180 *  PI);
         }
         // On the left border
         if (it.second.get_pos().x == 0)
@@ -278,11 +282,6 @@ void Server::update(float dt)
         }
 
         // Y axis velocity
-        // Inside the world
-        if ((0 < it.second.get_pos().y) && (it.second.get_pos().y < world.get_size().y))
-        {
-            velocity.y = it.second.get_controls().y * it.second.get_maxspeed();
-        }
         // On the top border
         if (it.second.get_pos().y == 0)
         {
@@ -324,10 +323,16 @@ void Server::update(float dt)
             it.second.set_pos(new_pos);
         }
 
+
         // Checking if the velocity has changed
-        if (it.second.get_vel() != velocity)
-        {
+            if ((it.second.get_vel() != velocity || it.second.get_controls().x != 0) && it.second.get_controls().y == 0)
+            {
+            it.second.set_vel({0, 0});
+            this->dirty = true; // Server is dirty if not the same velocity as used to be
+        }
+        else if (it.second.get_vel() != velocity || it.second.get_controls().x != 0) {
             it.second.set_vel(velocity);
+            it.second.add_angle(it.second.get_controls().x, it.second.get_controls().y);
             this->dirty = true; // Server is dirty if not the same velocity as used to be
         }
     }
@@ -355,7 +360,7 @@ void Server::update_clients()
     {
         // Players position and velocity to packet
         toSend << elem.first << elem.second.get_pos().x << elem.second.get_pos().y <<
-            elem.second.get_vel().x << elem.second.get_vel().y;
+            elem.second.get_vel().x << elem.second.get_vel().y << elem.second.get_angle();
     }
 
     // Pushing server elapsed time to packet

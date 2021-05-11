@@ -58,12 +58,14 @@ void Client::recieve()
                     for (int i = 0; i < n; ++i)
                     {
                         int index; // Player id
+                        float angle;
                         sf::Vector2f pos, v; // Positon and velocity from server
 
-                        packet >> index >> pos.x >> pos.y >> v.x >> v.y;
+                        packet >> index >> pos.x >> pos.y >> v.x >> v.y >> angle;
 
                         world.get_players()[index].set_pos(pos); // Updating position for players
                         world.get_players()[index].set_vel(v); // Updating velocity for players
+                        world.get_players()[index].set_angle(angle);
                     }
                 }
 

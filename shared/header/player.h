@@ -3,6 +3,7 @@
 #include "SFML\System.hpp"
 #include "debug.h"
 
+
 class Player
 {
     const float RADIUS = 100.0f; // Player radius
@@ -15,6 +16,11 @@ class Player
 
     sf::Vector2f pos; // Position
     sf::Vector2f v; // Velocity
+
+    float car_angle;
+    float wheel_angle;
+
+    //Engine engine;
 
     sf::Vector2f controls; // Current player controls status
 
@@ -40,4 +46,8 @@ public:
     void player_not_ready(); // Player is not ready
 
     int get_selected_car(); // Get a car id selected by this player
+
+    float get_angle();
+    void add_angle(float, float);
+    void set_angle(float);
 };

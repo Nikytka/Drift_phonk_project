@@ -67,3 +67,21 @@ int Player::get_selected_car()
 {
 	return this->selected_car_id;
 }
+
+float Player::get_angle()
+{
+	return this->car_angle;
+}
+
+void Player::add_angle(float sign_x, float sign_y)
+{
+	if ( sign_x > 0 && sign_y < 0 || sign_x < 0 && sign_y > 0 )
+		this->car_angle += 2;
+	else if (sign_x < 0 && sign_y < 0 || sign_x > 0 && sign_y > 0 )
+		this->car_angle -= 2;
+}
+
+void Player::set_angle(float angle)
+{
+	this->car_angle = angle;
+}
