@@ -245,7 +245,6 @@ void Server::update(float dt)
                 velocity.x -= back_acc  * it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2)) + (it.second.get_vel().x > 0 ? 1 : (it.second.get_vel().x < 0 ? -1 : 0)) * back_acc * abs(cos((it.second.get_angle() - 90 )* PI/ 180)) ;
                 velocity.y -= back_acc  * it.second.get_vel().y / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2)) + (it.second.get_vel().y > 0 ? 1 : (it.second.get_vel().y < 0 ? -1 : 0)) * back_acc * abs(sin((it.second.get_angle() - 90) * PI / 180));
             }
-            std::cout << it.second.get_vel().y << " ";
         }
         // On the left border
         if (it.second.get_pos().x <= 0)
@@ -255,6 +254,7 @@ void Server::update(float dt)
             new_pos.y = it.second.get_pos().y;
             it.second.set_pos(new_pos);
             velocity.x = -it.second.get_vel().x;
+            velocity.y = it.second.get_vel().y;
 
         }
         
@@ -266,6 +266,7 @@ void Server::update(float dt)
             new_pos.y = it.second.get_pos().y;
             it.second.set_pos(new_pos);
             velocity.x = -it.second.get_vel().x;
+            velocity.y = it.second.get_vel().y;
         }
 
         // Y axis velocity
@@ -277,6 +278,7 @@ void Server::update(float dt)
             new_pos.x = it.second.get_pos().x;
             it.second.set_pos(new_pos);
             velocity.y = -it.second.get_vel().y;
+            velocity.x = it.second.get_vel().x;
         }
         
         // On the bottom border
@@ -287,6 +289,7 @@ void Server::update(float dt)
             new_pos.y = world.get_size().y;
             it.second.set_pos(new_pos);
             velocity.y = -it.second.get_vel().y;
+            velocity.x = it.second.get_vel().x;
         }      
 
         it.second.set_vel(velocity);
