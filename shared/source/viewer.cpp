@@ -3,7 +3,7 @@
 #include "viewer.h"
 
 
-Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 800), name)
+Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(1920, 1080), name)
 {
     // Loading player textures
     this->car_textures[0].loadFromFile("car_0.png");

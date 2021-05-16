@@ -19,6 +19,7 @@ int main()
     std::vector<sf::Music> def_samples(5);
     def_samples[0].openFromFile("mus0.ogg");
     def_samples[1].openFromFile("mus1.ogg");
+    def_samples[2].openFromFile("mus2.ogg");
 
     // Creating vector of samples phonk music
     std::vector<sf::Music> ph_samples(5);
@@ -47,6 +48,10 @@ int main()
     float acs, angle;
 
     sf::Vector2f prevControls; // Previous player controls vector
+
+    float prevgearControls = 0; // Previous player gear controls
+
+    bool gear_change = true;
 
     // Main cycle
     while (client.isRunning() && viewer.isOpen())
@@ -98,37 +103,32 @@ int main()
 
             sf::Vector2f currControls; // Current player controls vector
 
-            if (client.id() == 0)
-            {
-                // WASD for player 0
-                currControls = controls_wasd();
-            }
-            else
-            {
-                // Arrow controls for others
-                currControls = controls_arrows();
-            }
-            
+            // Setting controls of player
+            currControls = controls_wasd();
+
+            // Current player gear controls
+            float currgearControls;
+
+            currgearControls = controls_arrows();
+
             // Changing player's velocity to new velocity
             world.get_players()[client.id()].set_controls(currControls);
 
+            // Changing player's gear controls to new gear controls
+            world.get_players()[client.id()].set_gear_controls(currgearControls);
 
             //Checking if car is drifting now (checking difference between angles of sprite and velocity
             if (sqrt(pow(world.get_players()[client.id()].get_vel().x, 2) + pow(world.get_players()[client.id()].get_vel().y, 2)) >= 50) {
-                if (world.get_players()[client.id()].get_vel().y<=0)
-                    acs = acos(-world.get_players()[client.id()].get_vel().x / sqrt(pow(world.get_players()[client.id()].get_vel().x, 2) + pow(world.get_players()[client.id()].get_vel().y, 2))) * 180 / PI ;
-                else 
+                if (world.get_players()[client.id()].get_vel().y <= 0)
+                    acs = acos(-world.get_players()[client.id()].get_vel().x / sqrt(pow(world.get_players()[client.id()].get_vel().x, 2) + pow(world.get_players()[client.id()].get_vel().y, 2))) * 180 / PI;
+                else
                     acs = acos(world.get_players()[client.id()].get_vel().x / sqrt(pow(world.get_players()[client.id()].get_vel().x, 2) + pow(world.get_players()[client.id()].get_vel().y, 2))) * 180 / PI + 180;
                 if (fmod(world.get_players()[client.id()].get_angle(), 360) >= 0)
                     angle = fmod(world.get_players()[client.id()].get_angle(), 360);
-                else {
-                    angle = 360.0f - fmod(-world.get_players()[client.id()].get_angle(),360);
-                }
+                else 
+                    angle = 360.0f - fmod(-world.get_players()[client.id()].get_angle(), 360);
 
-                std::cout << angle << " ";
-                std::cout << acs << std::endl;
-
-                if (abs(angle-acs) > 30 && abs(angle-acs) < 330 && abs(fmod(angle+180,360)-acs) > 30 && abs(fmod(angle+180,360) - acs) < 330) {
+                if (abs(angle - acs) > 30 && abs(angle - acs) < 330 && abs(fmod(angle + 180, 360) - acs) > 30 && abs(fmod(angle + 180, 360) - acs) < 330) {
                     def_samples[j1].setVolume(0);
                     ph_samples[j2].setVolume(100);
                 }
@@ -143,10 +143,7 @@ int main()
                 ph_samples[j2].setVolume(0);
             }
 
-
-            // Restarting clock and updating world
-            const auto dt = gameClock.restart();
-            world.update(dt.asSeconds());
+            
 
             // On any change notify server
             if (currControls != prevControls)
@@ -154,6 +151,58 @@ int main()
                 client.notify_server();
                 prevControls = currControls;
             }
+
+            //std::cout << world.get_players()[client.id()].get_gear() << "    ";
+            
+            if (currgearControls >=0 && world.get_players()[client.id()].get_gear() != 5 || currgearControls <=0 && world.get_players()[client.id()].get_gear() != -1) {
+                /*if (prevgearControls == 1)
+                {
+                    world.get_players()[client.id()].set_gear_controls(0);
+                    client.change_gear();
+                }
+                else*/
+                
+                if (currgearControls == 0.0f && fabs(prevgearControls) == 1) {
+                    gear_change = true;
+                    prevgearControls = 0.0f;
+                }
+
+                if (currgearControls != prevgearControls /*&& currgearControls != 0.0f*/ && gear_change == true)
+                { 
+                    prevgearControls = currgearControls;
+                    std::cout << "ksfdjf  ";
+                    gear_change = false;
+                    world.get_players()[client.id()].add_gear(currgearControls);
+                    client.change_gear();
+                }
+
+                
+            }
+            
+            /*if ((currgearControls = 1 && world.get_players()[client.id()].get_gear() == 5) || (currgearControls == -1 && world.get_players()[client.id()].get_gear() == -1));
+            else {
+                if (currgearControls != prevgearControls && currgearControls != 0)
+                {
+                    client.change_gear();
+                    prevgearControls = currgearControls;
+                }
+                if (currgearControls == 0)
+                {
+                    world.get_players()[client.id()].set_gear_controls(0);
+                    client.change_gear();
+                    prevgearControls = 0;
+                }
+            }*/
+
+            //std::cout << currgearControls << " " << prevgearControls << std::endl <<std::endl;
+
+            std::cout << currgearControls << " " << prevgearControls << " " << gear_change << " "<<world.get_players()[client.id()].get_gear() << std::endl;
+
+            // Restarting clock and updating world
+            const auto dt = gameClock.restart();
+            world.update(dt.asSeconds());
+
+            
 
             // Drawing world
             viewer.draw_gameplay(world);

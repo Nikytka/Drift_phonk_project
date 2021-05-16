@@ -2,12 +2,11 @@
 
 #include "controls.h"
 
-sf::Vector2f controls_arrows()
+float controls_arrows()
 {
-    sf::Vector2f controls;
+    float controls;
 
-    controls.x = float(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) - float(sf::Keyboard::isKeyPressed(sf::Keyboard::Left));
-    controls.y = float(sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) - float(sf::Keyboard::isKeyPressed(sf::Keyboard::Up));
+    controls = sf::Keyboard::isKeyPressed(sf::Keyboard::Up) ? 1 : (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) ? -1 : 0);
 
     return controls;
 }

@@ -75,13 +75,38 @@ float Player::get_angle()
 
 void Player::add_angle(float sign_x, float sign_y)
 {
-	if ( sign_x > 0 && sign_y < 0 || sign_x < 0 && sign_y > 0 )
+	if ( sign_x > 0 && sign_y <= 0 || sign_x < 0 && sign_y > 0 )
 		this->car_angle += 2;
-	else if (sign_x < 0 && sign_y < 0 || sign_x > 0 && sign_y > 0 )
+	else if (sign_x < 0 && sign_y <= 0 || sign_x > 0 && sign_y >= 0 )
 		this->car_angle -= 2;
 }
 
 void Player::set_angle(float angle)
 {
 	this->car_angle = angle;
+}
+
+float Player::get_gearbox_controls()
+{
+	return this->gearbox_controls;
+}
+
+void Player::set_gear_controls(float gearbox_controls)
+{
+	this->gearbox_controls = gearbox_controls;
+}
+
+int Player::get_gear()
+{
+	return this->gear;
+}
+
+void Player::add_gear(float gear_controls)
+{
+	this->gear += gear_controls;
+}
+
+void Player::set_gear(int gear)
+{
+	this->gear = gear;
 }

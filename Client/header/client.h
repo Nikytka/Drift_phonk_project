@@ -33,6 +33,8 @@ public:
     
     void notify_server(); // Notify server about new player controls
 
+    void change_gear(); // Notify server about player gear change
+
     int id() const; // Get client id
     
     bool isRunning() const; // Is client running

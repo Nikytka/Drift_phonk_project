@@ -6,8 +6,8 @@
 
 class Viewer : public sf::RenderWindow
 {
-    const int VIEWER_WIDTH = 800;
-    const int VIEWER_HEIGHT = 800;
+    const int VIEWER_WIDTH = 1920;
+    const int VIEWER_HEIGHT = 1080;
 
     const int NUMBER_OF_CARS = 3;
     std::map<int, sf::Texture> car_textures; // Map of car textures

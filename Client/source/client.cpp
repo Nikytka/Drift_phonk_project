@@ -65,7 +65,7 @@ void Client::recieve()
 
                         world.get_players()[index].set_pos(pos); // Updating position for players
                         world.get_players()[index].set_vel(v); // Updating velocity for players
-                        world.get_players()[index].set_angle(angle);
+                        world.get_players()[index].set_angle(angle); // Updating car angle 
                     }
                 }
 
@@ -133,6 +133,25 @@ void Client::notify_server()
     {
         std::cout << "Can't send movement to server\n";
     }
+}
+
+void Client::change_gear()
+{
+    // Creating a packet
+    sf::Packet packet;
+
+    // The client's player gearbox controls 
+    int gear = world.get_players()[id()].get_gear();
+
+    // Creating a packet for sending controls
+    packet << Message::Gear_change << clientId << gear;
+
+    // Sending packet
+    if (socket.send(packet) != sf::Socket::Done)
+    {
+        std::cout << "Can't send movement to server\n";
+    }
+
 }
 
 int Client::id() const

@@ -17,12 +17,13 @@ class Player
     sf::Vector2f pos; // Position
     sf::Vector2f v; // Velocity
 
-    float car_angle;
-    float wheel_angle;
-
-    //Engine engine;
+    float car_angle; // Angle between direction of speed and horizontal(initial) direction
 
     sf::Vector2f controls; // Current player controls status
+
+    int gear = 1; // Number of gear
+
+    float gearbox_controls; // Current player gear controls
 
 public:
     void update(float dt); // Update player position
@@ -42,12 +43,25 @@ public:
     sf::Vector2f get_controls(); // Get player controls
     void set_controls(sf::Vector2f controls); // Set player controls
 
+    float get_gearbox_controls(); // Get player gearbox controls
+    void set_gear_controls(float gear_controls); // Set player gear controls
+
     void player_ready(); // Player is ready
+
     void player_not_ready(); // Player is not ready
 
     int get_selected_car(); // Get a car id selected by this player
 
-    float get_angle();
-    void add_angle(float, float);
-    void set_angle(float);
+    float get_angle(); // Get angle of velocity of a car
+
+    void add_angle(float, float); // Add little angle to the angle of velocity
+
+    void set_angle(float); // Set the angle of velocity of player
+
+    int get_gear(); // Get current gear
+
+    void set_gear(int); // Set gear
+
+    void add_gear(float); // Add gear
+
 };

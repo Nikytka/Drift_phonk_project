@@ -9,5 +9,6 @@ enum Message
 	UpdateWorld,
 	Movement,
 	SceneGameplay,
-	RemovePlayer
+	RemovePlayer,
+	Gear_change
 };
