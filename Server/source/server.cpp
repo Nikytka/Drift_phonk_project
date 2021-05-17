@@ -4,7 +4,7 @@
 
 const float PI = 3.141592;
 
-const float forw_acc = 4;
+const float forw_acc = 5;
 const float back_acc = 3.5;
 const float max_vel_abs = 2000;
 
@@ -255,56 +255,72 @@ void Server::update(float dt)
         {
             if (it.second.get_gear() != 0)
             {
-                //if (fabs(it.second.get_controls().y) > 0)
-                //{
+                
+                if ( it.second.get_controls().y < 0) 
+                {
                     velocity.x = it.second.get_vel().x + (it.second.get_gear() >= 0 ? it.second.get_controls().y : -it.second.get_controls().y) * forw_acc * (6 - abs(it.second.get_gear())) * cos(it.second.get_angle() * PI / 180);
                     velocity.y = it.second.get_vel().y + (it.second.get_gear() >= 0 ? it.second.get_controls().y : -it.second.get_controls().y) * forw_acc * (6 - abs(it.second.get_gear())) * sin(it.second.get_angle() * PI / 180);
-                //}
-                /*else
+                }
+                else
                 {
-                    
-                    if (it.second.get_vel().y <= 0)
-                        acs = acos(-it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2))) * 180 / PI;
-                    else
-                        acs = acos(it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2))) * 180 / PI + 180;
-
-                    if (fmod(it.second.get_angle(), 360) >= 0)
-                        angle = fmod(it.second.get_angle(), 360);
-                    else
-                        angle = 360.0f - fmod(-it.second.get_angle(), 360);
-                    std::cout << abs(acs - angle) << " ";
-                    if (abs(angle - acs) > 10 && abs(angle - acs) < 350 && abs(fmod(angle + 180, 360) - acs) > 10 && abs(fmod(angle + 180, 360) - acs) < 350) {
-                        std::cout << "dcsdsdv ";
-                        velocity.x = it.second.get_vel().x + 0.5 * forw_acc * (6 - it.second.get_gear()) * cos(it.second.get_angle() * PI / 180);
-                        velocity.y = it.second.get_vel().y + 0.5 * forw_acc * (6 - it.second.get_gear()) * sin(it.second.get_angle() * PI / 180);
+                    if (it.second.get_controls().y > 0)
+                    {
+                        velocity.x = it.second.get_vel().x / 1.05;
+                        velocity.y = it.second.get_vel().y / 1.05;
                     }
                     else
                     {
-                        velocity.x = it.second.get_vel().x;
-                        velocity.y = it.second.get_vel().y;
-                    }
-                    
-                }*/
-                std::cout << velocity.x << " " << velocity.y << std::endl ;
-                if (it.second.get_vel().x != 0 || it.second.get_vel().y != 0)
-                {
-                    velocity.x -= back_acc * (1 - prev_vel_abs / max_vel_abs) * it.second.get_vel().x / prev_vel_abs + (it.second.get_vel().x > 0 ? 1 : (it.second.get_vel().x < 0 ? -1 : 0)) * back_acc * (1 - prev_vel_abs / max_vel_abs) * abs(cos((it.second.get_angle() - 90) * PI / 180));
-                    velocity.y -= back_acc * (1 - prev_vel_abs / max_vel_abs) * it.second.get_vel().y / prev_vel_abs + (it.second.get_vel().y > 0 ? 1 : (it.second.get_vel().y < 0 ? -1 : 0)) * back_acc * (1 - prev_vel_abs / max_vel_abs) * abs(sin((it.second.get_angle() - 90) * PI / 180));
-                }
+                        if (it.second.get_vel().y <= 0)
+                            acs = acos(-it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2))) * 180 / PI;
+                        else
+                            acs = acos(it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2))) * 180 / PI + 180;
+                        if (fmod(it.second.get_angle(), 360) >= 0)
+                            angle = fmod(it.second.get_angle(), 360);
+                        else
+                            angle = 360.0f - fmod(-it.second.get_angle(), 360);
+                        if (abs(angle - acs) > 30 && abs(angle - acs) < 330 && abs(fmod(angle + 180, 360) - acs) > 30 && abs(fmod(angle + 180, 360) - acs) < 330)
+                        {
+                            if (angle < 90)
+                            {
+                                velocity.x = it.second.get_vel().x - forw_acc * cos(angle / 180 * PI);
+                                velocity.y = it.second.get_vel().y - forw_acc * sin(angle / 180 * PI);
+                            }
+                            if (angle >= 90 && angle <= 180)
+                            {
+                                velocity.x = it.second.get_vel().x + forw_acc * cos(PI - angle / 180 * PI);
+                                velocity.y = it.second.get_vel().y - forw_acc * sin(PI - angle / 180 * PI);
 
-                std::cout << velocity.x << " " << velocity.y << std::endl << std::endl;
+                            }
+                            if (angle > 180 && angle <= 270)
+                            {
+                                velocity.x = it.second.get_vel().x + forw_acc * cos((angle - 180)/ 180 * PI);
+                                velocity.y = it.second.get_vel().y + forw_acc * sin((angle - 180)/ 180 * PI);
+                            }
+                            if (angle > 270)
+                            {
+                                velocity.x = it.second.get_vel().x - forw_acc * cos((360 - angle) / 180 * PI);
+                                velocity.y = it.second.get_vel().y + forw_acc * sin((360 - angle) / 180 * PI);
+                            }
+                        }
+                        else
+                        {
+                            velocity.x = it.second.get_vel().x;
+                            velocity.y = it.second.get_vel().y;
+                        }
+                    }
+                }
             }
             else
             {
                 velocity.x = it.second.get_vel().x;
                 velocity.y = it.second.get_vel().y;
-
+            }
                 if (it.second.get_vel().x != 0 || it.second.get_vel().y != 0)
                 {
-                    velocity.x -= back_acc * (1 - prev_vel_abs / max_vel_abs) * it.second.get_vel().x / prev_vel_abs + (it.second.get_vel().x > 0 ? 1 : (it.second.get_vel().x < 0 ? -1 : 0)) * back_acc * (1 - prev_vel_abs / max_vel_abs) * abs(cos((it.second.get_angle() - 90) * PI / 180));
-                    velocity.y -= back_acc * (1 - prev_vel_abs / max_vel_abs) * it.second.get_vel().y / prev_vel_abs + (it.second.get_vel().y > 0 ? 1 : (it.second.get_vel().y < 0 ? -1 : 0)) * back_acc * (1 - prev_vel_abs / max_vel_abs) * abs(sin((it.second.get_angle() - 90) * PI / 180));
+                    velocity.x -= back_acc * it.second.get_vel().x / prev_vel_abs + (it.second.get_vel().x > 0 ? 1 : (it.second.get_vel().x < 0 ? -1 : 0)) * back_acc * (1 - prev_vel_abs / max_vel_abs) * abs(cos((it.second.get_angle() - 90) * PI / 180));
+                    velocity.y -= back_acc * it.second.get_vel().y / prev_vel_abs + (it.second.get_vel().y > 0 ? 1 : (it.second.get_vel().y < 0 ? -1 : 0)) * back_acc * (1 - prev_vel_abs / max_vel_abs) * abs(sin((it.second.get_angle() - 90) * PI / 180));
                 }
-            }
+            
         }
         // On the left border
         if (it.second.get_pos().x <= 0)
@@ -363,13 +379,18 @@ void Server::update(float dt)
 
         this->dirty = true;
 
-        //std::cout << prev_vel_abs << std::endl;
-
         // Checking if the angle has changed
-        if ((prev_vel_abs >=10 )&& it.second.get_controls().x != 0)
-        {
-            it.second.add_angle(it.second.get_controls().x, it.second.get_controls().y);
+        if (abs(it.second.get_controls().y) != 0) {
+            if (prev_vel_abs >= 10 && it.second.get_controls().x != 0)
+            {
+                it.second.add_angle(it.second.get_controls().x, it.second.get_controls().y);
+            }
         }
+        else
+            if (prev_vel_abs >= 200 && it.second.get_controls().x != 0)
+            {
+                it.second.add_angle1(it.second.get_controls().x, it.second.get_controls().y);
+            }
     }
 
     // Updating player's positions

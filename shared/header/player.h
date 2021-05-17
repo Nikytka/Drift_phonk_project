@@ -56,6 +56,8 @@ public:
 
     void add_angle(float, float); // Add little angle to the angle of velocity
 
+    void add_angle1(float, float); // Add little angle to the angle of velocity
+
     void set_angle(float); // Set the angle of velocity of player
 
     int get_gear(); // Get current gear

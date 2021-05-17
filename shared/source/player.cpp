@@ -75,9 +75,17 @@ float Player::get_angle()
 
 void Player::add_angle(float sign_x, float sign_y)
 {
-	if ( sign_x > 0 && sign_y <= 0 || sign_x < 0 && sign_y > 0 )
+	if (sign_x > 0)
+		this->car_angle += 3;
+	else 
+		this->car_angle -= 3;
+}
+
+void Player::add_angle1(float sign_x, float sign_y)
+{
+	if (sign_x > 0)
 		this->car_angle += 2;
-	else if (sign_x < 0 && sign_y <= 0 || sign_x > 0 && sign_y >= 0 )
+	else
 		this->car_angle -= 2;
 }
 

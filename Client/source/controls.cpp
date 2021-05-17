@@ -16,7 +16,7 @@ sf::Vector2f controls_wasd()
     sf::Vector2f controls;
 
     controls.x = float(sf::Keyboard::isKeyPressed(sf::Keyboard::D)) - float(sf::Keyboard::isKeyPressed(sf::Keyboard::A));
-    controls.y = float(sf::Keyboard::isKeyPressed(sf::Keyboard::S)) - float(sf::Keyboard::isKeyPressed(sf::Keyboard::W));
+    controls.y = float(sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) - float(sf::Keyboard::isKeyPressed(sf::Keyboard::W));
 
     return controls;
 }

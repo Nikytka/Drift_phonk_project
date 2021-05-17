@@ -143,8 +143,6 @@ int main()
                 ph_samples[j2].setVolume(0);
             }
 
-            
-
             // On any change notify server
             if (currControls != prevControls)
             {
@@ -152,57 +150,25 @@ int main()
                 prevControls = currControls;
             }
 
-            //std::cout << world.get_players()[client.id()].get_gear() << "    ";
-            
             if (currgearControls >=0 && world.get_players()[client.id()].get_gear() != 5 || currgearControls <=0 && world.get_players()[client.id()].get_gear() != -1) {
-                /*if (prevgearControls == 1)
-                {
-                    world.get_players()[client.id()].set_gear_controls(0);
-                    client.change_gear();
-                }
-                else*/
-                
+
                 if (currgearControls == 0.0f && fabs(prevgearControls) == 1) {
                     gear_change = true;
                     prevgearControls = 0.0f;
                 }
 
-                if (currgearControls != prevgearControls /*&& currgearControls != 0.0f*/ && gear_change == true)
+                if (currgearControls != prevgearControls && gear_change == true)
                 { 
                     prevgearControls = currgearControls;
-                    std::cout << "ksfdjf  ";
                     gear_change = false;
                     world.get_players()[client.id()].add_gear(currgearControls);
                     client.change_gear();
                 }
-
-                
             }
-            
-            /*if ((currgearControls = 1 && world.get_players()[client.id()].get_gear() == 5) || (currgearControls == -1 && world.get_players()[client.id()].get_gear() == -1));
-            else {
-                if (currgearControls != prevgearControls && currgearControls != 0)
-                {
-                    client.change_gear();
-                    prevgearControls = currgearControls;
-                }
-                if (currgearControls == 0)
-                {
-                    world.get_players()[client.id()].set_gear_controls(0);
-                    client.change_gear();
-                    prevgearControls = 0;
-                }
-            }*/
-
-            //std::cout << currgearControls << " " << prevgearControls << std::endl <<std::endl;
-
-            std::cout << currgearControls << " " << prevgearControls << " " << gear_change << " "<<world.get_players()[client.id()].get_gear() << std::endl;
 
             // Restarting clock and updating world
             const auto dt = gameClock.restart();
             world.update(dt.asSeconds());
-
-            
 
             // Drawing world
             viewer.draw_gameplay(world);
