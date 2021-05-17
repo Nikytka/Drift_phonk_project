@@ -20,6 +20,8 @@ int main()
     def_samples[0].openFromFile("mus0.ogg");
     def_samples[1].openFromFile("mus1.ogg");
     def_samples[2].openFromFile("mus2.ogg");
+    def_samples[3].openFromFile("mus3.ogg");
+    def_samples[4].openFromFile("mus4.ogg");
 
     // Creating vector of samples phonk music
     std::vector<sf::Music> ph_samples(5);
