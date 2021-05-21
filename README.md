@@ -1,6 +1,6 @@
 # Drift_phonk_project #
 
- Game development repository (cars, money, cash, wenches, cutlets, coins, bills, phonk)
+ A game for real men. It has everything you need: money, cars, drift, music, flex, phonk.
 
 
 ## INFO ##  
