@@ -6,6 +6,8 @@
 
 class Player
 {
+    std::string nickname; // Player nickname
+
     const float RADIUS = 100.0f; // Player radius
     const float SPEED = 300.0f; // Pixels per second, used as a reference to calculate velocity
 
@@ -61,9 +63,9 @@ public:
     void set_angle(float); // Set the angle of velocity of player
 
     int get_gear(); // Get current gear
-
     void set_gear(int); // Set gear
-
     void add_gear(float); // Add gear
 
+    std::string getNickname(); // Get player nickname
+    void setNickname(std::string name); // Set player nickname
 };

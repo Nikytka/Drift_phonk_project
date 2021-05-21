@@ -114,6 +114,16 @@ void Player::add_gear(float gear_controls)
 	this->gear += gear_controls;
 }
 
+std::string Player::getNickname()
+{
+	return this->nickname;
+}
+
+void Player::setNickname(std::string name)
+{
+	this->nickname = name;
+}
+
 void Player::set_gear(int gear)
 {
 	this->gear = gear;

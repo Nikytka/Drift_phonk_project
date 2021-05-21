@@ -106,8 +106,6 @@ Client::Client(const std::string& ip, int port, World& world) :
     world(world)
 {
     running = true; // Client now running
-    syncThread = std::thread(&Client::recieve, this); // Creating thread
-    syncThread.detach(); // Detaching thread
 }
 
 Client::~Client()
@@ -162,6 +160,12 @@ int Client::id() const
 bool Client::isRunning() const
 {
     return running;
+}
+
+void Client::connect()
+{
+    syncThread = std::thread(&Client::recieve, this); // Creating thread
+    syncThread.detach(); // Detaching thread
 }
 
 void Client::disconnect()
@@ -221,7 +225,11 @@ void Client::events_connect(Viewer& viewer)
     // Pressing connect button
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_connect_selected_button() == 3))
     {
-        // TODO
+        this->clientNickname = viewer.getTextbox()[0].getText(); // Setting up client nickname
+        this->ip = viewer.getTextbox()[1].getText(); // Setting up server ip
+        this->port = std::stoi(viewer.getTextbox()[2].getText()); // Setting up server port
+
+        this->connect();
 
         while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }

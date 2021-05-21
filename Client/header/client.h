@@ -9,9 +9,11 @@
 
 class Client
 {
-    const std::string ip; // Ip adress
-    const int port; // Port
+    std::string ip; // Ip adress
+    int port; // Port
     float serverTime = 0.f; // Server time
+
+    std::string clientNickname; // Player nickname for this client
 
     std::atomic<bool> running = false; // Is running, default = false
 
@@ -39,6 +41,7 @@ public:
     
     bool isRunning() const; // Is client running
 
+    void connect(); // Connect to server
     void disconnect(); // Disconnect from the server
 
     void events_connect(Viewer& viewer); // Handle events in the connect screen
