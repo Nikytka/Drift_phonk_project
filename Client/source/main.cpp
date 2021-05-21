@@ -23,6 +23,18 @@ int main()
     def_samples[3].openFromFile("mus3.ogg");
     def_samples[4].openFromFile("mus4.ogg");
 
+    sf::Music gas_sample;
+    gas_sample.openFromFile("gas.ogg");
+    gas_sample.setLoop(true);
+    gas_sample.setVolume(0);
+    gas_sample.play();
+
+    sf::Music idle_sample;
+    idle_sample.openFromFile("idle.ogg");
+    idle_sample.setLoop(true);
+    idle_sample.setVolume(0);
+    idle_sample.play();
+
     // Creating vector of samples phonk music
     std::vector<sf::Music> ph_samples(5);
     ph_samples[0].openFromFile("phonk1.ogg");
@@ -32,7 +44,7 @@ int main()
     ph_samples[4].openFromFile("phonk5.ogg");
 
     // Start playing menu default music sample
-    def_samples[0].setVolume(50);
+    def_samples[0].setVolume(30);
     def_samples[0].play();
 
     // Start playing first phonk music sample
@@ -84,6 +96,8 @@ int main()
         // Gameplay scene
         if (world.GetScene() == Scene::Gameplay)
         {
+            idle_sample.setVolume(100);
+
             // Cheking which default sample is playing
             for (i1 = 0; i1 < 5; i1++)
                 if (def_samples[i1].getStatus() == sf::Music::Playing)
@@ -93,7 +107,7 @@ int main()
 
             // If current default sample is over, the next starts
             if (def_samples[j1].getStatus() == sf::Music::Stopped) {
-                def_samples[(j1 + 1) % 5].setVolume(50);
+                def_samples[(j1 + 1) % 5].setVolume(40);
                 def_samples[(j1 + 1) % 5].play();
             }
 
@@ -139,17 +153,29 @@ int main()
 
                 if (abs(angle - acs) > 30 && abs(angle - acs) < 330 && abs(fmod(angle + 180, 360) - acs) > 30 && abs(fmod(angle + 180, 360) - acs) < 330) {
                     def_samples[j1].setVolume(0);
-                    ph_samples[j2].setVolume(100);
+                    ph_samples[j2].setVolume(80);
                 }
 
                 else {
-                    def_samples[j1].setVolume(50);
+                    def_samples[j1].setVolume(40);
                     ph_samples[j2].setVolume(0);
                 }
             }
             else {
-                def_samples[j1].setVolume(50);
+                def_samples[j1].setVolume(40);
                 ph_samples[j2].setVolume(0);
+            }
+
+            if (world.get_players()[client.id()].get_controls().y < 0)
+            {
+                idle_sample.setVolume(0);
+                gas_sample.setVolume(60);
+            }
+
+            if (world.get_players()[client.id()].get_controls().y== 0)
+            {
+                idle_sample.setVolume(60);
+                gas_sample.setVolume(0);
             }
 
             // On any change notify server
