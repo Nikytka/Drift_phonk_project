@@ -179,6 +179,54 @@ void Client::disconnect()
     }
 }
 
+void Client::events_connect(Viewer& viewer)
+{
+    sf::Event my_event; // Getting event
+
+    // Processing events
+    while (viewer.pollEvent(my_event))
+    {
+        // Close window event
+        if (my_event.type == sf::Event::Closed)
+        {
+            viewer.close();
+        }
+
+        // Text input event
+        if (viewer.get_connect_selected_button() < viewer.get_number_of_textboxes())
+        {
+            if (my_event.type == sf::Event::TextEntered)
+            {
+                viewer.getTextbox()[viewer.get_connect_selected_button()].typedOn(my_event);
+            }
+        }
+    }
+
+    // Changing buttons in connect scene
+    // Going down
+    if ((viewer.get_connect_selected_button() < (viewer.get_connect_menu_size() - 1)) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        viewer.set_connect_selected_button(viewer.get_connect_selected_button() + 1);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {}
+    }
+    // Going up
+    if ((viewer.get_connect_selected_button() > 0) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        viewer.set_connect_selected_button(viewer.get_connect_selected_button() - 1);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {}
+    }
+
+    // Pressing connect button
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_connect_selected_button() == 3))
+    {
+        // TODO
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
+    }
+}
+
 void Client::events_lobby(Viewer& viewer)
 {
     // Changing buttons in lobby

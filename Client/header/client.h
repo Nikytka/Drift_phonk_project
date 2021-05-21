@@ -41,6 +41,7 @@ public:
 
     void disconnect(); // Disconnect from the server
 
+    void events_connect(Viewer& viewer); // Handle events in the connect screen
     void events_lobby(Viewer& viewer); // Handle events in the lobby
     void events_car_selection(Viewer& viewer); // Handle events in the hero selection screen
 };
