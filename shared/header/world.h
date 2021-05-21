@@ -14,12 +14,13 @@ using PlayerId = int;
 // Game world structure
 class World
 {
-    static const int WORLD_WIDTH = 1920; // World x span
-    static const int WORLD_HEIGHT = 1080; // World y span
+    // Some standart values : 800 800, 1920 1080, 3840 2160, 5760 3240, 7680 4320
+    static const int WORLD_WIDTH = 800; // World x span
+    static const int WORLD_HEIGHT = 800; // World y span
 
     std::unordered_map<PlayerId, Player> players; // Players map
 
-    Scene GameScene = Scene::Lobby; // Default scene is lobby
+    Scene GameScene = Scene::Connect; // Default scene is lobby
 
 public:
     std::mutex mutex; // Mutex

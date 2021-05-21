@@ -68,6 +68,21 @@ int Player::get_selected_car()
 	return this->selected_car_id;
 }
 
+void Player::set_selected_car(int car)
+{
+	this->selected_car_id = car;
+}
+
+bool Player::isCarSelected()
+{
+	return this->is_car_selected;
+}
+
+void Player::setCarSelectionConfirm(bool x)
+{
+	this->is_car_selected = x;
+}
+
 float Player::get_angle()
 {
 	return this->car_angle;
@@ -112,6 +127,16 @@ int Player::get_gear()
 void Player::add_gear(float gear_controls)
 {
 	this->gear += gear_controls;
+}
+
+std::string Player::getNickname()
+{
+	return this->nickname;
+}
+
+void Player::setNickname(std::string name)
+{
+	this->nickname = name;
 }
 
 void Player::set_gear(int gear)

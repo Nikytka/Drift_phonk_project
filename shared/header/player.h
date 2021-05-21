@@ -6,6 +6,8 @@
 
 class Player
 {
+    std::string nickname; // Player nickname
+
     const float RADIUS = 100.0f; // Player radius
     const float SPEED = 300.0f; // Pixels per second, used as a reference to calculate velocity
 
@@ -47,23 +49,23 @@ public:
     void set_gear_controls(float gear_controls); // Set player gear controls
 
     void player_ready(); // Player is ready
-
     void player_not_ready(); // Player is not ready
 
     int get_selected_car(); // Get a car id selected by this player
+    void set_selected_car(int car); // Set selected hero number
+
+    bool isCarSelected(); // Did the player select car
+    void setCarSelectionConfirm(bool x); // Set car selection confirmation
 
     float get_angle(); // Get angle of velocity of a car
-
     void add_angle(float, float); // Add little angle to the angle of velocity
-
     void add_angle1(float, float); // Add little angle to the angle of velocity
-
     void set_angle(float); // Set the angle of velocity of player
 
     int get_gear(); // Get current gear
-
     void set_gear(int); // Set gear
-
     void add_gear(float); // Add gear
 
+    std::string getNickname(); // Get player nickname
+    void setNickname(std::string name); // Set player nickname
 };

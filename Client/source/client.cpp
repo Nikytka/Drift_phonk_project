@@ -45,6 +45,48 @@ void Client::recieve()
                 std::cout << std::endl;
 
                 clock.restart();
+
+                // Sending client nickname to server
+                sf::Packet toServer;
+                toServer << Message::ClientNickname << id() << this->clientNickname;
+
+                // Sending packet
+                if (socket.send(toServer) != sf::Socket::Done)
+                {
+                    std::cout << "Can't send client nickname to server\n";
+                }
+
+                world.SetScene(Scene::Lobby);
+            }
+
+            // Nicknames packet processing
+            if (type == Message::PlayerNicknames)
+            {
+                {
+                    int n; // Number of players
+                    packet >> n; // Getting number of players from packet
+                    std::lock_guard<std::mutex> m(world.mutex);
+
+                    for (int i = 0; i < n; i++)
+                    {
+                        int index; // Player id
+                        std::string nickname; // Player nickname
+
+                        packet >> index >> nickname;
+
+                        world.get_players()[index].setNickname(nickname);
+                    }
+                }
+            }
+
+            // Gameover scene packet processing
+            if (type == Message::PlayerCarSelected)
+            {
+                int id, selected_hero;
+                packet >> id >> selected_hero;
+
+                world.get_players()[id].set_selected_car(selected_hero);
+                world.get_players()[id].setCarSelectionConfirm(true);
             }
 
             // Update world packet processing
@@ -106,8 +148,6 @@ Client::Client(const std::string& ip, int port, World& world) :
     world(world)
 {
     running = true; // Client now running
-    syncThread = std::thread(&Client::recieve, this); // Creating thread
-    syncThread.detach(); // Detaching thread
 }
 
 Client::~Client()
@@ -164,6 +204,12 @@ bool Client::isRunning() const
     return running;
 }
 
+void Client::connect()
+{
+    syncThread = std::thread(&Client::recieve, this); // Creating thread
+    syncThread.detach(); // Detaching thread
+}
+
 void Client::disconnect()
 {
     // Creating a packet
@@ -176,6 +222,58 @@ void Client::disconnect()
     if (socket.send(packet) != sf::Socket::Done)
     {
         std::cout << "Can't send disconnect packet to server\n";
+    }
+}
+
+void Client::events_connect(Viewer& viewer)
+{
+    sf::Event my_event; // Getting event
+
+    // Processing events
+    while (viewer.pollEvent(my_event))
+    {
+        // Close window event
+        if (my_event.type == sf::Event::Closed)
+        {
+            viewer.close();
+        }
+
+        // Text input event
+        if (viewer.get_connect_selected_button() < viewer.get_number_of_textboxes())
+        {
+            if (my_event.type == sf::Event::TextEntered)
+            {
+                viewer.getTextbox()[viewer.get_connect_selected_button()].typedOn(my_event);
+            }
+        }
+    }
+
+    // Changing buttons in connect scene
+    // Going down
+    if ((viewer.get_connect_selected_button() < (viewer.get_connect_menu_size() - 1)) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        viewer.set_connect_selected_button(viewer.get_connect_selected_button() + 1);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {}
+    }
+    // Going up
+    if ((viewer.get_connect_selected_button() > 0) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        viewer.set_connect_selected_button(viewer.get_connect_selected_button() - 1);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {}
+    }
+
+    // Pressing connect button
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_connect_selected_button() == 3))
+    {
+        this->clientNickname = viewer.getTextbox()[0].getText(); // Setting up client nickname
+        this->ip = viewer.getTextbox()[1].getText(); // Setting up server ip
+        this->port = std::stoi(viewer.getTextbox()[2].getText()); // Setting up server port
+
+        this->connect();
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }
 }
 
@@ -217,12 +315,16 @@ void Client::events_lobby(Viewer& viewer)
                 std::cout << "Can't send ready packet to server\n";
             }
         }
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }
 
     // Pressing hero selection button
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_lobby_selected_button() == 1))
     {
         world.SetScene(Scene::CarSelection);
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }
 
     // Pressing disconnect button
@@ -230,6 +332,8 @@ void Client::events_lobby(Viewer& viewer)
     {
         this->disconnect();
         this->running = false;
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }
 }
 
@@ -240,5 +344,52 @@ void Client::events_car_selection(Viewer& viewer)
     {
         world.SetScene(Scene::Lobby);
         while (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {}
+    }
+
+    // Going left in hero selection
+    if ((world.get_players()[this->clientId].get_selected_car() > 0) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        if (!world.get_players()[this->clientId].isCarSelected())
+        {
+            int current_car = world.get_players()[this->clientId].get_selected_car();
+            current_car -= 1;
+            world.get_players()[this->clientId].set_selected_car(current_car);
+            while (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {}
+        }
+    }
+
+    // Going right in hero selection
+    if ((world.get_players()[this->clientId].get_selected_car() < (viewer.get_number_of_cars() - 1)) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        if (!world.get_players()[this->clientId].isCarSelected())
+        {
+            int current_hero = world.get_players()[this->clientId].get_selected_car();
+            current_hero += 1;
+            world.get_players()[this->clientId].set_selected_car(current_hero);
+            while (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {}
+        }
+    }
+
+    // Confirming hero selection
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+    {
+        if (!world.get_players()[this->clientId].isCarSelected())
+        {
+            // Creating a packet
+            sf::Packet packet;
+
+            // Forming a packet for sending selected hero id
+            packet << Message::ClientCarSelected << this->id() << world.get_players()[this->clientId].get_selected_car();
+
+            // Sending packet
+            if (socket.send(packet) != sf::Socket::Done)
+            {
+                std::cout << "Can't send hero selection packet to server\n";
+            }
+
+            while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
+        }
     }
 }
