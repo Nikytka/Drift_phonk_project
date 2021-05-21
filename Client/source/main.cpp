@@ -177,6 +177,7 @@ int main()
 
             // Updating viewer hud
             viewer.updateHudSpeed(world.get_players()[client.id()].getAbsoluteSpeed());
+            viewer.updateHudGear(world.get_players()[client.id()].get_gear());
 
             // Restarting clock and updating world
             const auto dt = gameClock.restart();

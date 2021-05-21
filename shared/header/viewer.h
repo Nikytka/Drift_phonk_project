@@ -34,7 +34,8 @@ class Viewer : public sf::RenderWindow
     // GAMEPLAY SCENE PARAMETERS
     const float SPACE_BETWEEN_HUD_ITEMS = 0.05f; // Space between gameplay scene hud items (relative to viewer size)
     const float SPEED_REDUCE_FACTOR = 17.0f; // A number by which the hud speed is reduced (for reality)
-    sf::Text hudSpeed; // Player speed in gameplay scene
+    sf::Text hudSpeed; // Car speed in gameplay scene
+    sf::Text hudGear; // Car gear in gameplay scene
 
 public:
     Viewer(const std::string& name); // Viewer constructor
@@ -59,5 +60,6 @@ public:
 
     int get_number_of_cars(); // Get the number of cars in the game
 
-    void updateHudSpeed(float x);
+    void updateHudSpeed(float x); // Set new speed in gameplay scene hud
+    void updateHudGear(int x); // Set new gear in gameplay scene hud
 };

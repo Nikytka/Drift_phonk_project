@@ -84,15 +84,27 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 80
         lobby_buttons[i].setPosition(pos);
     }
 
-    // Setting up gameplay hud
+    // Setting up car speed (gameplay hud)
     hudSpeed.setFont(font);
     hudSpeed.setColor(sf::Color::White);
     hudSpeed.setString("0 km/h");
     hudSpeed.setOrigin(hudSpeed.getGlobalBounds().width, hudSpeed.getGlobalBounds().height);
-    sf::Vector2f pos;
-    pos.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
-    pos.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
-    hudSpeed.setPosition(pos);
+    sf::Vector2f posSpeed;
+    posSpeed.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+    posSpeed.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+    hudSpeed.setPosition(posSpeed);
+    hudSpeed.setString(""); // Setting to none, so it does no show up on server viewer
+
+    // Setting up car gear (gameplay hud)
+    hudGear.setFont(font);
+    hudGear.setColor(sf::Color::White);
+    hudGear.setString("1");
+    hudGear.setOrigin(hudGear.getGlobalBounds().width, hudGear.getGlobalBounds().height);
+    sf::Vector2f posGear;
+    posGear.x = float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+    posGear.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+    hudGear.setPosition(posGear);
+    hudGear.setString(""); // Setting to none, so it does no show up on server viewer
 }
 
 void Viewer::handleEvents()
@@ -256,6 +268,7 @@ void Viewer::draw_gameplay(World& world)
     }
 
     sf::RenderWindow::draw(hudSpeed); // Draw speed hud
+    sf::RenderWindow::draw(hudGear); // Draw gear hud
 
     // Displaying
     display();
@@ -324,4 +337,24 @@ void Viewer::updateHudSpeed(float x)
     pos.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
     pos.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
     hudSpeed.setPosition(pos);
+}
+
+void Viewer::updateHudGear(int x)
+{
+    std::stringstream ss;
+    ss << x;
+    std::string str = ss.str();
+
+    if (x == -1)
+    {
+        hudGear.setString("R");
+    }
+    if (x == 0)
+    {
+        hudGear.setString("N");
+    }
+    if (x > 0)
+    {
+        hudGear.setString(str);
+    }
 }
