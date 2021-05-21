@@ -212,7 +212,7 @@ int main()
             world.update(dt.asSeconds());
 
             // Drawing world
-            viewer.draw_gameplay(world);
+            viewer.draw_gameplay(world, client.id());
         }
 
         // Pause scene

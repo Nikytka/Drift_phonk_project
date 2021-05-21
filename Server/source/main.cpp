@@ -15,6 +15,8 @@ int main()
     sf::Clock gameClock;
     sf::Time tick;
 
+    viewer.setWholeMapView(true);
+
     // Main cycle
     while (server.isRunning() && viewer.isOpen())
     {
@@ -34,7 +36,7 @@ int main()
             tick = sf::Time();
         }
 
-        viewer.draw_gameplay(world); // Drawing world
+        viewer.draw_gameplay(world, -1); // Drawing world
     }
 
     return 0;

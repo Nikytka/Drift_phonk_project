@@ -15,6 +15,8 @@ class Viewer : public sf::RenderWindow
     const float CAR_SCALE_FACTOR = 0.7f;
     std::map<int, sf::Texture> car_textures; // Map of car textures
 
+    bool wholeMapView = false;
+
     sf::Font font; // Text font
 
     // CONNECT SCENE PARAMETERS
@@ -51,7 +53,7 @@ public:
     void draw_connect(World& world); // Draw connection screen scene
     void draw_lobby(World& world); // Draw lobby function
     void draw_car_selection(World& world, int clientId); // Draw car selection screen
-    void draw_gameplay(World& world); // Draw world during the game
+    void draw_gameplay(World& world, int myId); // Draw world during the game
     void draw_pause(); // Draw pause scene
 
     int get_connect_menu_size(); // Get the number of total number of buttons (including textboxes)
@@ -73,4 +75,7 @@ public:
 
     void updateHudSpeed(float x); // Set new speed in gameplay scene hud
     void updateHudGear(int x); // Set new gear in gameplay scene hud
+
+    bool ifWholeMapView(); // If the whole map view right now
+    void setWholeMapView(bool x); // Set whole map view
 };

@@ -417,6 +417,13 @@ void Client::events_gameplay(Viewer& viewer)
         world.SetScene(Scene::Pause);
         while (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {}
     }
+
+    // V to change view
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::V))
+    {
+        viewer.setWholeMapView(!viewer.ifWholeMapView());
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::V)) {}
+    }
 }
 
 void Client::events_pause(Viewer& viewer)

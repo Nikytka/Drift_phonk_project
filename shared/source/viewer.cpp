@@ -272,8 +272,32 @@ void Viewer::draw_car_selection(World& world, int clientId)
     display();
 }
 
-void Viewer::draw_gameplay(World& world)
+void Viewer::draw_gameplay(World& world, int myId)
 {
+    // Centering view to the player (client code)
+    if (!wholeMapView)
+    {
+        sf::View gameView(sf::FloatRect(0.0f, 0.0f, VIEWER_WIDTH, VIEWER_HEIGHT)); // Creating a rectangle
+        gameView.setCenter(world.get_players()[myId].get_pos()); // Centering to player
+
+        this->setView(gameView);
+    }
+
+    // Whole world fixed view (server code)
+    if (wholeMapView)
+    {
+        sf::View gameView(sf::FloatRect(0.0f, 0.0f, VIEWER_WIDTH, VIEWER_HEIGHT)); // Creating a rectangle
+        gameView.zoom(float(World::get_size().x) / float(this->VIEWER_WIDTH)); // Scaling to see the whole world
+
+        // Centering after the zoom
+        sf::Vector2f center;
+        center.x = float(World::get_size().x) / 2.0f;
+        center.y = float(World::get_size().y) / 2.0f;
+        gameView.setCenter(center);
+
+        this->setView(gameView);
+    }
+
     // Setting black color as a background
     clear(sf::Color::Black);
 
@@ -419,4 +443,14 @@ void Viewer::updateHudGear(int x)
     {
         hudGear.setString(str);
     }
+}
+
+bool Viewer::ifWholeMapView()
+{
+    return this->wholeMapView;
+}
+
+void Viewer::setWholeMapView(bool x)
+{
+    this->wholeMapView = x;
 }
