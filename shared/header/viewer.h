@@ -12,6 +12,7 @@ class Viewer : public sf::RenderWindow
     const int VIEWER_HEIGHT = 800;
 
     const int NUMBER_OF_CARS = 3;
+    const float CAR_SCALE_FACTOR = 0.7f;
     std::map<int, sf::Texture> car_textures; // Map of car textures
 
     sf::Font font; // Text font
@@ -23,9 +24,10 @@ class Viewer : public sf::RenderWindow
     std::map<int, sf::Text> connect_buttons; // Map of buttons in connect scene
     int connect_selected_button = 0; // Currently selected button in connect scene
 
-    const int NUMBER_OF_LOBBY_BUTTONS = 3; // Number of buttons in lobby
-    std::map<int, sf::Text> lobby_buttons; // Map of buttons in lobby
-    int lobby_selected_button = 0; // Currently selected button in lobby
+    const int NUMBER_OF_LOBBY_BUTTONS = 3; // Number of buttons in lobby scene
+    const float SPACE_BETWEEN_LOBBY_BUTTONS = 0.1f; // Space between lobby buttons (relative to viewer size)
+    std::map<int, sf::Text> lobby_buttons; // Map of buttons in lobby scene
+    int lobby_selected_button = 0; // Currently selected button in lobby scene
 
 public:
     Viewer(const std::string& name); // Viewer constructor
@@ -34,7 +36,7 @@ public:
     
     void draw_connect(World& world); // Draw connection screen scene
     void draw_lobby(World& world); // Draw lobby function
-    void draw_car_selection(World& world); // Draw hero selection screen
+    void draw_car_selection(World& world, int clientId); // Draw car selection screen
     void draw_gameplay(World& world); // Draw world during the game
 
     int get_connect_menu_size(); // Get the number of total number of buttons (including textboxes)
@@ -47,4 +49,6 @@ public:
     int get_lobby_selected_button(); // Get selected lobby button
     void set_lobby_selected_button(int button); // Set selected lobby button
     std::map<int, sf::Text>& get_lobby_buttons(); // Get lobby buttons map
+
+    int get_number_of_cars(); // Get the number of cars in the game
 };

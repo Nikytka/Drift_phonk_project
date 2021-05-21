@@ -68,6 +68,21 @@ int Player::get_selected_car()
 	return this->selected_car_id;
 }
 
+void Player::set_selected_car(int car)
+{
+	this->selected_car_id = car;
+}
+
+bool Player::isCarSelected()
+{
+	return this->is_car_selected;
+}
+
+void Player::setCarSelectionConfirm(bool x)
+{
+	this->is_car_selected = x;
+}
+
 float Player::get_angle()
 {
 	return this->car_angle;

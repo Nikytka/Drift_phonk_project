@@ -159,12 +159,70 @@ void Viewer::draw_lobby(World& world)
     display();
 }
 
-void Viewer::draw_car_selection(World& world)
+void Viewer::draw_car_selection(World& world, int clientId)
 {
     // Setting black color as a background
     clear(sf::Color::Black);
 
+    // Calculatin total menu distance (for centering)
+    float total_heroes_width = (NUMBER_OF_CARS - 1) * VIEWER_WIDTH * 0.1f;
+    for (int i = 0; i < (NUMBER_OF_CARS - 1); i++)
+    {
+        sf::Sprite sample_hero_sprite(this->car_textures[0]);
+        sample_hero_sprite.setScale(CAR_SCALE_FACTOR, CAR_SCALE_FACTOR); // Scaling
 
+        total_heroes_width += sample_hero_sprite.getGlobalBounds().width;
+    }
+
+    // Setting up hero sprites
+    for (auto& it : car_textures)
+    {
+        sf::Sprite hero_sprite(this->car_textures[it.first]); // Set texture
+        hero_sprite.scale(CAR_SCALE_FACTOR, CAR_SCALE_FACTOR); // Scaling
+        auto hero_rect = hero_sprite.getGlobalBounds();
+        hero_sprite.setOrigin(hero_rect.width / CAR_SCALE_FACTOR / 2.0f,
+            hero_rect.height / CAR_SCALE_FACTOR / 2.0f); // Set sprite origin
+
+        // Calculating hero sprite position
+        sf::Vector2f pos;
+        pos.x = float(VIEWER_WIDTH) / 2.0f + float(it.first) * float(VIEWER_WIDTH) * 0.1f
+            + float(it.first) * hero_rect.width - total_heroes_width / 2.0f;
+        pos.y = float(VIEWER_HEIGHT) / 2.0f;
+
+        hero_sprite.setPosition(pos);
+
+        // Drawing selected hero rectangle
+        if (it.first == world.get_players()[clientId].get_selected_car())
+        {
+            // Creating outer rectangle
+            sf::RectangleShape selected_rect_out;
+            selected_rect_out.setSize({ hero_rect.width * 1.1f, hero_rect.height * 1.1f });
+            selected_rect_out.setOrigin({ selected_rect_out.getSize().x / 2.0f, selected_rect_out.getSize().y / 2.0f });
+            if (!world.get_players()[clientId].isCarSelected())
+            {
+                // If selection is not confirmed - white
+                selected_rect_out.setFillColor(sf::Color::White);
+            }
+            else
+            {
+                // If selection is confirmed - red
+                selected_rect_out.setFillColor(sf::Color::Red);
+            }
+            selected_rect_out.setPosition(pos);
+
+            // Creating inner rectangle
+            sf::RectangleShape selected_rect_in;
+            selected_rect_in.setSize({ hero_rect.width * 1.07f, hero_rect.height * 1.07f });
+            selected_rect_in.setOrigin({ selected_rect_in.getSize().x / 2.0f, selected_rect_in.getSize().y / 2.0f });
+            selected_rect_in.setFillColor(sf::Color::Black);
+            selected_rect_in.setPosition(pos);
+
+            sf::RenderWindow::draw(selected_rect_out); // Drawing outer rectangle
+            sf::RenderWindow::draw(selected_rect_in); // Drawing inner rectangle
+        }
+
+        sf::RenderWindow::draw(hero_sprite); // Draw
+    }
 
     // Displaying
     display();
@@ -236,4 +294,9 @@ void Viewer::set_lobby_selected_button(int button)
 std::map<int, sf::Text>& Viewer::get_lobby_buttons()
 {
     return this->lobby_buttons;
+}
+
+int Viewer::get_number_of_cars()
+{
+    return this->NUMBER_OF_CARS;
 }

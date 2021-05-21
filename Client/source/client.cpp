@@ -329,4 +329,51 @@ void Client::events_car_selection(Viewer& viewer)
         world.SetScene(Scene::Lobby);
         while (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {}
     }
+
+    // Going left in hero selection
+    if ((world.get_players()[this->clientId].get_selected_car() > 0) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        if (!world.get_players()[this->clientId].isCarSelected())
+        {
+            int current_car = world.get_players()[this->clientId].get_selected_car();
+            current_car -= 1;
+            world.get_players()[this->clientId].set_selected_car(current_car);
+            while (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {}
+        }
+    }
+
+    // Going right in hero selection
+    if ((world.get_players()[this->clientId].get_selected_car() < (viewer.get_number_of_cars() - 1)) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        if (!world.get_players()[this->clientId].isCarSelected())
+        {
+            int current_hero = world.get_players()[this->clientId].get_selected_car();
+            current_hero += 1;
+            world.get_players()[this->clientId].set_selected_car(current_hero);
+            while (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {}
+        }
+    }
+
+    // Confirming hero selection
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+    {
+        if (!world.get_players()[this->clientId].isCarSelected())
+        {
+            // Creating a packet
+            sf::Packet packet;
+
+            // Forming a packet for sending selected hero id
+            packet << Message::ClientCarSelected << this->id() << world.get_players()[this->clientId].get_selected_car();
+
+            // Sending packet
+            if (socket.send(packet) != sf::Socket::Done)
+            {
+                std::cout << "Can't send hero selection packet to server\n";
+            }
+
+            while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
+        }
+    }
 }

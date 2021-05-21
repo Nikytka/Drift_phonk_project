@@ -78,7 +78,7 @@ int main()
         {
             viewer.handleEvents();
             client.events_car_selection(viewer);
-            viewer.draw_car_selection(world);
+            viewer.draw_car_selection(world, client.id());
         }
 
         // Gameplay scene
