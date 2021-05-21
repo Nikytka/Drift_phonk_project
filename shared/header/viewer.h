@@ -36,9 +36,15 @@ public:
     void draw_lobby(World& world); // Draw lobby function
     void draw_car_selection(World& world); // Draw hero selection screen
     void draw_gameplay(World& world); // Draw world during the game
+
+    int get_connect_menu_size(); // Get the number of total number of buttons (including textboxes)
+    int get_number_of_textboxes(); // Get the number of textboxes in the connection scene
+    int get_connect_selected_button(); // Get selected connect scene button
+    void set_connect_selected_button(int button); // Set selected connect scene button
+    std::map<int, sf::Text>& get_connect_buttons(); // Get connect scene buttons map
+    std::map<int, Textbox>& getTextbox(); // Get connect scene textboxes map
     
     int get_lobby_selected_button(); // Get selected lobby button
     void set_lobby_selected_button(int button); // Set selected lobby button
-    
     std::map<int, sf::Text>& get_lobby_buttons(); // Get lobby buttons map
 };

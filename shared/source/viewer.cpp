@@ -193,6 +193,36 @@ void Viewer::draw_gameplay(World& world)
     display();
 }
 
+int Viewer::get_connect_menu_size()
+{
+    return NUMBER_OF_CONNECT_BUTTONS;
+}
+
+int Viewer::get_number_of_textboxes()
+{
+    return NUMBER_OF_CONNECT_TEXTBOXES;
+}
+
+int Viewer::get_connect_selected_button()
+{
+    return this->connect_selected_button;
+}
+
+void Viewer::set_connect_selected_button(int button)
+{
+    this->connect_selected_button = button;
+}
+
+std::map<int, sf::Text>& Viewer::get_connect_buttons()
+{
+    return this->connect_buttons;
+}
+
+std::map<int, Textbox>& Viewer::getTextbox()
+{
+    return this->connect_textboxes;
+}
+
 int Viewer::get_lobby_selected_button()
 {
     return this->lobby_selected_button;
