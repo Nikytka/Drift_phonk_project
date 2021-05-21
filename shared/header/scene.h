@@ -7,6 +7,6 @@ enum class Scene
 	CarSelection,
 	Gameplay,
 	Gameover,
+	Pause,
 	ErrorServerFull,
-	ErrorOngoingGame
 };

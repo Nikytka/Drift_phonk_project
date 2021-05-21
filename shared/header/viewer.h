@@ -37,6 +37,12 @@ class Viewer : public sf::RenderWindow
     sf::Text hudSpeed; // Car speed in gameplay scene
     sf::Text hudGear; // Car gear in gameplay scene
 
+    // PAUSE SCENE PARAMETERS
+    const int NUMBER_OF_PAUSE_BUTTONS = 2; // Number of buttons in pause scene
+    const float SPACE_BETWEEN_PAUSE_BUTTONS = 0.1f; // Space between pause buttons (relative to viewer size)
+    std::map<int, sf::Text> pause_buttons; // Map of buttons in pause scene
+    int pause_selected_button = 0; // Currently selected button in pause scene
+
 public:
     Viewer(const std::string& name); // Viewer constructor
     
@@ -46,6 +52,7 @@ public:
     void draw_lobby(World& world); // Draw lobby function
     void draw_car_selection(World& world, int clientId); // Draw car selection screen
     void draw_gameplay(World& world); // Draw world during the game
+    void draw_pause(); // Draw pause scene
 
     int get_connect_menu_size(); // Get the number of total number of buttons (including textboxes)
     int get_number_of_textboxes(); // Get the number of textboxes in the connection scene
@@ -57,6 +64,10 @@ public:
     int get_lobby_selected_button(); // Get selected lobby button
     void set_lobby_selected_button(int button); // Set selected lobby button
     std::map<int, sf::Text>& get_lobby_buttons(); // Get lobby buttons map
+
+    int get_pause_selected_button(); // Get selected pause button
+    void set_pause_selected_button(int button); // Set selected pause button
+    std::map<int, sf::Text>& get_pause_buttons(); // Get pause buttons map
 
     int get_number_of_cars(); // Get the number of cars in the game
 

@@ -408,3 +408,49 @@ void Client::events_car_selection(Viewer& viewer)
         }
     }
 }
+
+void Client::events_gameplay(Viewer& viewer)
+{
+    // ESC to get back to lobby
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+        world.SetScene(Scene::Pause);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {}
+    }
+}
+
+void Client::events_pause(Viewer& viewer)
+{
+    // Changing buttons in pause scene
+    // Going down
+    if ((viewer.get_pause_selected_button() < (viewer.get_pause_buttons().size() - 1)) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        viewer.set_pause_selected_button(viewer.get_pause_selected_button() + 1);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)) {}
+    }
+    // Going up
+    if ((viewer.get_pause_selected_button() > 0) &&
+        sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        viewer.set_pause_selected_button(viewer.get_pause_selected_button() - 1);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {}
+    }
+
+    // Pressing 'back to game' button
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_pause_selected_button() == 0))
+    {
+        world.SetScene(Scene::Gameplay);
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
+    }
+
+    // Pressing disconnect button
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_pause_selected_button() == 1))
+    {
+        this->disconnect();
+        this->running = false;
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
+    }
+}

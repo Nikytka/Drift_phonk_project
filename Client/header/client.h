@@ -47,4 +47,6 @@ public:
     void events_connect(Viewer& viewer); // Handle events in the connect screen
     void events_lobby(Viewer& viewer); // Handle events in the lobby
     void events_car_selection(Viewer& viewer); // Handle events in the hero selection screen
+    void events_gameplay(Viewer& viewer); // Handle events in the gameplay scene
+    void events_pause(Viewer& viewer); // Handle events in the pause scene
 };

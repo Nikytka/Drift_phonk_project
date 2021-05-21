@@ -96,6 +96,8 @@ int main()
         // Gameplay scene
         if (world.GetScene() == Scene::Gameplay)
         {
+            client.events_gameplay(viewer);
+
             idle_sample.setVolume(100);
 
             // Cheking which default sample is playing
@@ -211,6 +213,14 @@ int main()
 
             // Drawing world
             viewer.draw_gameplay(world);
+        }
+
+        // Pause scene
+        if (world.GetScene() == Scene::Pause)
+        {
+            viewer.handleEvents();
+            client.events_pause(viewer);
+            viewer.draw_pause();
         }
     }
 

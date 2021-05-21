@@ -2,6 +2,7 @@
 
 #include "viewer.h"
 
+// sf::Style::Fullscreen
 
 Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 800), name)
 {
@@ -105,6 +106,29 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 80
     posGear.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
     hudGear.setPosition(posGear);
     hudGear.setString(""); // Setting to none, so it does no show up on server viewer
+
+    // Setting up pause buttons
+    for (int i = 0; i < NUMBER_OF_PAUSE_BUTTONS; i++)
+    {
+        pause_buttons[i].setFont(font);
+    }
+    pause_buttons[0].setString("back to game");
+    pause_buttons[1].setString("disconnect");
+    for (int i = 0; i < NUMBER_OF_PAUSE_BUTTONS; i++)
+    {
+        float total_menu_height = (NUMBER_OF_PAUSE_BUTTONS - 1) * VIEWER_HEIGHT * 0.1f;
+        for (int i = 0; i < NUMBER_OF_PAUSE_BUTTONS; i++)
+        {
+            total_menu_height += pause_buttons[i].getGlobalBounds().height;
+        }
+
+        pause_buttons[i].setOrigin(pause_buttons[i].getGlobalBounds().width / 2.0f, pause_buttons[i].getGlobalBounds().height / 2.0f);
+        sf::Vector2f pos;
+        pos.x = float(VIEWER_WIDTH) / 2.0f;
+        pos.y = float(VIEWER_HEIGHT) / 2.0f + float(i) * float(VIEWER_HEIGHT) * 0.1f
+            - total_menu_height / 2.0f;
+        pause_buttons[i].setPosition(pos);
+    }
 }
 
 void Viewer::handleEvents()
@@ -274,6 +298,29 @@ void Viewer::draw_gameplay(World& world)
     display();
 }
 
+void Viewer::draw_pause()
+{
+    // Setting black color as a background
+    clear(sf::Color::Black);
+
+    for (auto& it : pause_buttons)
+    {
+        if (it.first == pause_selected_button)
+        {
+            it.second.setColor(sf::Color::Red);
+        }
+        else
+        {
+            it.second.setColor(sf::Color::White);
+        }
+
+        sf::RenderWindow::draw(it.second);
+    }
+
+    // Displaying
+    display();
+}
+
 int Viewer::get_connect_menu_size()
 {
     return NUMBER_OF_CONNECT_BUTTONS;
@@ -317,6 +364,21 @@ void Viewer::set_lobby_selected_button(int button)
 std::map<int, sf::Text>& Viewer::get_lobby_buttons()
 {
     return this->lobby_buttons;
+}
+
+int Viewer::get_pause_selected_button()
+{
+    return this->pause_selected_button;
+}
+
+void Viewer::set_pause_selected_button(int button)
+{
+    this->pause_selected_button = button;
+}
+
+std::map<int, sf::Text>& Viewer::get_pause_buttons()
+{
+    return this->pause_buttons;
 }
 
 int Viewer::get_number_of_cars()
