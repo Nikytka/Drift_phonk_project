@@ -2,7 +2,11 @@
 
 enum class Scene
 {
+	Connect,
 	Lobby,
 	CarSelection,
-	Gameplay
+	Gameplay,
+	Gameover,
+	ErrorServerFull,
+	ErrorOngoingGame
 };

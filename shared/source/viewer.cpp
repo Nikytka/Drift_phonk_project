@@ -3,7 +3,7 @@
 #include "viewer.h"
 
 
-Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(1920, 1080), name)
+Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 800), name)
 {
     // Loading player textures
     this->car_textures[0].loadFromFile("car_0.png");
@@ -16,7 +16,7 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(1920, 1
         std::cout << "Could not load font" << std::endl;
     }
 
-    setFramerateLimit(60);
+    setFramerateLimit(60); // Frame limit
 
     // Setting up lobby buttons
     for (int i = 0; i < NUMBER_OF_LOBBY_BUTTONS; i++)
