@@ -32,17 +32,23 @@ void Client::recieve()
                 world.get_players()[clientId].set_pos(pos);
                 std::cout << "Client created, id: " << clientId << std::endl;
                 
-                // Printing currently online players
-                std::cout << "Online players by their id\'s: ";
-                int online_players_num;
-                packet >> online_players_num;
-                for (int i = 0; i < online_players_num; i++)
+                // Recieving all world data
+                int n;
+                packet >> n; // Getting number of players from packet
+                std::lock_guard<std::mutex> m(world.mutex);
+                for (int i = 0; i < n; i++)
                 {
-                    int id;
-                    packet >> id;
-                    std::cout << id << " ";
+                    int index, hero_id;
+                    bool hero_selected;
+                    sf::Vector2f pos, v; // Positon and velocity from server
+
+                    packet >> index >> pos.x >> pos.y >> v.x >> v.y >> hero_id >> hero_selected;
+
+                    world.get_players()[index].set_pos(pos); // Updating position for players
+                    world.get_players()[index].set_vel(v); // Updating velocity for players
+                    world.get_players()[index].set_selected_car(hero_id); // Setting selected car
+                    world.get_players()[index].setCarSelectionConfirm(hero_selected); // Setting car selection confirmation
                 }
-                std::cout << std::endl;
 
                 clock.restart();
 
@@ -56,6 +62,15 @@ void Client::recieve()
                     std::cout << "Can't send client nickname to server\n";
                 }
 
+                // Printing currently online players
+                std::cout << "Online players by their id\'s: ";
+                for (auto& it : world.get_players())
+                {
+                    std::cout << it.first << " ";
+                }
+                std::cout << std::endl;
+
+                // Changing scene to lobby
                 world.SetScene(Scene::Lobby);
             }
 

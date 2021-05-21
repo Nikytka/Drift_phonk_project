@@ -84,18 +84,23 @@ void Server::receive()
                         outPacket << Message::ClientCreated << this->currentPlayerId << world.get_players()[this->currentPlayerId].get_pos().x
                             << world.get_players()[this->currentPlayerId].get_pos().y << clock.getElapsedTime().asSeconds();
 
-                        // Sending online player id's to the new player
-                        outPacket << this->world.get_players().size();
-                        for (auto& it : this->world.get_players())
+                        // Sending all world data to new player
+                        // (data about players that are already connected)
+                        outPacket << world.get_players().size();
+                        for (auto& elem : world.get_players())
                         {
-                            outPacket << it.first;
+                            outPacket << elem.first << elem.second.get_pos().x << elem.second.get_pos().y <<
+                                elem.second.get_vel().x << elem.second.get_vel().y 
+                                << elem.second.get_selected_car() << elem.second.isCarSelected();
                         }
 
                         dirty = true; // Server dirty
 
                         // Sending a packet to a new client
                         if (tempSocket->send(outPacket) != sf::Socket::Done)
-                            std::cout << "Error sending player index" << std::endl;
+                        {
+                            std::cout << "Error sending data to new player" << std::endl;
+                        }
                         else
                         {
                             std::cout << "Player " << this->currentPlayerId << " connected (spawn position: "

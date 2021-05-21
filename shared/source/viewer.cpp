@@ -29,7 +29,6 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 80
     {
         // Setting up textboxes
         connect_textboxes[i].setFont(font); // Setting font
-        connect_textboxes[i].setText("init"); // Setting sample text for right origin setting (the line lower)
         connect_textboxes[i].setOrigin({ 0.0f, connect_textboxes[i].getGlobalBounds().height / 2.0f });
         sf::Vector2f pos; // Creating position
         pos.x = float(VIEWER_WIDTH) / 2.0f + float(VIEWER_WIDTH) * SPACE_BETWEEN_CONNECT_BUTTONS / 4.0f;
@@ -37,7 +36,6 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 80
             - float(VIEWER_HEIGHT) * float(NUMBER_OF_CONNECT_BUTTONS - 1) * SPACE_BETWEEN_CONNECT_BUTTONS / 2.0f;
         connect_textboxes[i].setPosition(pos); // Setting textbox position
         connect_textboxes[i].setLimit(true, 10); // Textbox has limit
-        connect_textboxes[i].setText(""); // Setting text back to none
 
         // Setting up buttons
         connect_buttons[i].setFont(font); // Setting font
