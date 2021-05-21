@@ -184,6 +184,30 @@ void Server::process_packets()
             dirty = true; // Server dirty
         }
 
+        // Processing hero selection packets
+        if (messageType == Message::ClientCarSelected)
+        {
+            int selected_hero;
+            packet >> clientId >> selected_hero;
+
+            world.get_players()[clientId].set_selected_car(selected_hero);
+            world.get_players()[clientId].setCarSelectionConfirm(true);
+
+            // Creating a packet for other players
+            sf::Packet toSend;
+            toSend << Message::PlayerCarSelected << clientId << selected_hero;
+
+            // Sending to all players
+            for (const auto& elem : sockets)
+            {
+                if (elem.second->send(toSend) != sf::Socket::Done)
+                {
+                    std::cout << "Can't send player hero selection packet to player " << elem.first << " \n";
+                }
+            }
+        }
+
+        // Gear change packet processing
         if (messageType == Message::Gear_change)
         {
             int gear; // Recieved gear 

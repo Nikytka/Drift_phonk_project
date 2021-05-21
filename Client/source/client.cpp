@@ -79,6 +79,16 @@ void Client::recieve()
                 }
             }
 
+            // Gameover scene packet processing
+            if (type == Message::PlayerCarSelected)
+            {
+                int id, selected_hero;
+                packet >> id >> selected_hero;
+
+                world.get_players()[id].set_selected_car(selected_hero);
+                world.get_players()[id].setCarSelectionConfirm(true);
+            }
+
             // Update world packet processing
             if (type == Message::UpdateWorld)
             {
@@ -305,12 +315,16 @@ void Client::events_lobby(Viewer& viewer)
                 std::cout << "Can't send ready packet to server\n";
             }
         }
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }
 
     // Pressing hero selection button
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return) && (viewer.get_lobby_selected_button() == 1))
     {
         world.SetScene(Scene::CarSelection);
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }
 
     // Pressing disconnect button
@@ -318,6 +332,8 @@ void Client::events_lobby(Viewer& viewer)
     {
         this->disconnect();
         this->running = false;
+
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Return)) {}
     }
 }
 
