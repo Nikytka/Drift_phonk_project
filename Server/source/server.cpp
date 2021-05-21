@@ -147,6 +147,33 @@ void Server::process_packets()
         sf::Packet packet = receivedPackets.dequeue();
         packet >> messageType;
 
+        // Processing nickname packets
+        if (messageType == Message::ClientNickname)
+        {
+            std::string clientNick;
+            packet >> clientId >> clientNick; // Data from packet
+            world.get_players()[clientId].setNickname(clientNick); // Updating player velocity
+            std::cout << "New player nickname: " << clientNick << " (player id: " << clientId << ")" << std::endl;
+
+            // Forming packet with nicknames to send to all players
+            sf::Packet toSend;
+            toSend << Message::PlayerNicknames << world.get_players().size();
+            for (auto& elem : world.get_players())
+            {
+                // Players position and velocity to packet
+                toSend << elem.first << elem.second.getNickname();
+            }
+
+            // Sending packets to all clients
+            for (const auto& elem : sockets)
+            {
+                if (elem.second->send(toSend) != sf::Socket::Done)
+                {
+                    std::cout << "Can't send nicknames packet to player " << elem.first << " \n";
+                }
+            }
+        }
+
         // Processing movement packets
         if (messageType == Message::Movement)
         {
