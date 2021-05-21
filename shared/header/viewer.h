@@ -3,6 +3,7 @@
 #include <SFML\Graphics.hpp>
 
 #include "world.h"
+#include "textbox.h"
 
 class Viewer : public sf::RenderWindow
 {
@@ -15,6 +16,13 @@ class Viewer : public sf::RenderWindow
 
     sf::Font font; // Text font
 
+    const int NUMBER_OF_CONNECT_TEXTBOXES = 3; // Number of textboxes in connect scene
+    const int NUMBER_OF_CONNECT_BUTTONS = 4; // Number of buttons in connect scene (total, with textboxes)
+    const float SPACE_BETWEEN_CONNECT_BUTTONS = 0.1f; // Space between connect scene buttons (relative to viewer size)
+    std::map<int, Textbox> connect_textboxes; // Map of textboxes in connect scene
+    std::map<int, sf::Text> connect_buttons; // Map of buttons in connect scene
+    int connect_selected_button = 0; // Currently selected button in connect scene
+
     const int NUMBER_OF_LOBBY_BUTTONS = 3; // Number of buttons in lobby
     std::map<int, sf::Text> lobby_buttons; // Map of buttons in lobby
     int lobby_selected_button = 0; // Currently selected button in lobby
@@ -24,6 +32,7 @@ public:
     
     void handleEvents(); // Handling viewer events function
     
+    void draw_connect(World& world); // Draw connection screen scene
     void draw_lobby(World& world); // Draw lobby function
     void draw_car_selection(World& world); // Draw hero selection screen
     void draw_gameplay(World& world); // Draw world during the game

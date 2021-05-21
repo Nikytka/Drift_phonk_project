@@ -58,6 +58,14 @@ int main()
     // Main cycle
     while (client.isRunning() && viewer.isOpen())
     {
+        // Connect screen scene
+        if (world.GetScene() == Scene::Connect)
+        {
+            //viewer.handleEvents();
+            //client.events_connect(viewer);
+            viewer.draw_connect(world);
+        }
+
         // Lobby scene
         if (world.GetScene() == Scene::Lobby)
         {

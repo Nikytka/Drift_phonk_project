@@ -39,6 +39,9 @@
     <ClCompile Include="..\shared\source\viewer.cpp">
       <Filter>shared\source</Filter>
     </ClCompile>
+    <ClCompile Include="..\shared\source\textbox.cpp">
+      <Filter>shared\source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\shared\header\network.h">
@@ -61,6 +64,9 @@
     </ClInclude>
     <ClInclude Include="header\controls.h">
       <Filter>this project\header</Filter>
+    </ClInclude>
+    <ClInclude Include="..\shared\header\textbox.h">
+      <Filter>shared\header</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

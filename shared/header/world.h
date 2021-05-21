@@ -19,7 +19,7 @@ class World
 
     std::unordered_map<PlayerId, Player> players; // Players map
 
-    Scene GameScene = Scene::Lobby; // Default scene is lobby
+    Scene GameScene = Scene::Connect; // Default scene is lobby
 
 public:
     std::mutex mutex; // Mutex
