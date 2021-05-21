@@ -17,6 +17,7 @@ class Viewer : public sf::RenderWindow
 
     sf::Font font; // Text font
 
+    // CONNECT SCENE PARAMETERS
     const int NUMBER_OF_CONNECT_TEXTBOXES = 3; // Number of textboxes in connect scene
     const int NUMBER_OF_CONNECT_BUTTONS = 4; // Number of buttons in connect scene (total, with textboxes)
     const float SPACE_BETWEEN_CONNECT_BUTTONS = 0.1f; // Space between connect scene buttons (relative to viewer size)
@@ -24,10 +25,16 @@ class Viewer : public sf::RenderWindow
     std::map<int, sf::Text> connect_buttons; // Map of buttons in connect scene
     int connect_selected_button = 0; // Currently selected button in connect scene
 
+    // LOBBY SCENE PARAMETERS
     const int NUMBER_OF_LOBBY_BUTTONS = 3; // Number of buttons in lobby scene
     const float SPACE_BETWEEN_LOBBY_BUTTONS = 0.1f; // Space between lobby buttons (relative to viewer size)
     std::map<int, sf::Text> lobby_buttons; // Map of buttons in lobby scene
     int lobby_selected_button = 0; // Currently selected button in lobby scene
+
+    // GAMEPLAY SCENE PARAMETERS
+    const float SPACE_BETWEEN_HUD_ITEMS = 0.05f; // Space between gameplay scene hud items (relative to viewer size)
+    const float SPEED_REDUCE_FACTOR = 17.0f; // A number by which the hud speed is reduced (for reality)
+    sf::Text hudSpeed; // Player speed in gameplay scene
 
 public:
     Viewer(const std::string& name); // Viewer constructor
@@ -51,4 +58,6 @@ public:
     std::map<int, sf::Text>& get_lobby_buttons(); // Get lobby buttons map
 
     int get_number_of_cars(); // Get the number of cars in the game
+
+    void updateHudSpeed(float x);
 };

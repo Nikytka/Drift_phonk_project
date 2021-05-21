@@ -23,6 +23,11 @@ void Player::set_pos(sf::Vector2f new_pos)
 	this->pos.y = new_pos.y;
 }
 
+float Player::getAbsoluteSpeed()
+{
+	return std::sqrt(v.x * v.x + v.y * v.y);
+}
+
 sf::Vector2f Player::get_vel()
 {
 	return this->v;

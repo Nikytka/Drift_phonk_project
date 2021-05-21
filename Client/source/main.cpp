@@ -175,6 +175,9 @@ int main()
                 }
             }
 
+            // Updating viewer hud
+            viewer.updateHudSpeed(world.get_players()[client.id()].getAbsoluteSpeed());
+
             // Restarting clock and updating world
             const auto dt = gameClock.restart();
             world.update(dt.asSeconds());

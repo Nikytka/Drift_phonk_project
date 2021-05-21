@@ -83,6 +83,16 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 80
             - total_menu_height / 2.0f;
         lobby_buttons[i].setPosition(pos);
     }
+
+    // Setting up gameplay hud
+    hudSpeed.setFont(font);
+    hudSpeed.setColor(sf::Color::White);
+    hudSpeed.setString("0 km/h");
+    hudSpeed.setOrigin(hudSpeed.getGlobalBounds().width, hudSpeed.getGlobalBounds().height);
+    sf::Vector2f pos;
+    pos.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+    pos.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+    hudSpeed.setPosition(pos);
 }
 
 void Viewer::handleEvents()
@@ -245,6 +255,8 @@ void Viewer::draw_gameplay(World& world)
         sf::RenderWindow::draw(player_model); // Draw
     }
 
+    sf::RenderWindow::draw(hudSpeed); // Draw speed hud
+
     // Displaying
     display();
 }
@@ -297,4 +309,19 @@ std::map<int, sf::Text>& Viewer::get_lobby_buttons()
 int Viewer::get_number_of_cars()
 {
     return this->NUMBER_OF_CARS;
+}
+
+void Viewer::updateHudSpeed(float x)
+{
+    std::stringstream ss;
+    ss << int(x / SPEED_REDUCE_FACTOR);
+    std::string str = ss.str();
+
+    hudSpeed.setString(str + " km/h");
+    
+    hudSpeed.setOrigin(hudSpeed.getGlobalBounds().width, hudSpeed.getGlobalBounds().height);
+    sf::Vector2f pos;
+    pos.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+    pos.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+    hudSpeed.setPosition(pos);
 }

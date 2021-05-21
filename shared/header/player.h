@@ -35,6 +35,8 @@ public:
     sf::Vector2f get_pos(); // Get player position
     void set_pos(sf::Vector2f new_pos); // Set new player position
 
+    float getAbsoluteSpeed(); // Get absolute player speed
+
     sf::Vector2f get_vel(); // Get player velocity
     void set_vel(sf::Vector2f vel); // Update player velocity to new value
 
