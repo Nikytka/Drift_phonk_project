@@ -14,9 +14,9 @@ using PlayerId = int;
 // Game world structure
 class World
 {
-    // Some standart values : 800 800, 1920 1080, 3840 2160, 5760 3240, 7680 4320
-    static const int WORLD_WIDTH = 800; // World x span
-    static const int WORLD_HEIGHT = 800; // World y span
+    // Some standart values : 800 800, 1920 1080, 3840 2160, 5760 3240, 7680 4320, 8889 5000
+    static const int WORLD_WIDTH = 8889; // World x span
+    static const int WORLD_HEIGHT = 5000; // World y span
 
     std::unordered_map<PlayerId, Player> players; // Players map
 

@@ -4,8 +4,14 @@
 
 // sf::Style::Fullscreen
 
-Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 800), name)
+Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(1920, 1080), name, sf::Style::Fullscreen)
 {
+    // Loading map
+    if (!map_texture.loadFromFile("map.png")) {
+        std::cout << "Can not load map texture" << std::endl;
+    }
+    map_sprite.setTexture(map_texture);
+
     // Loading player textures
     this->car_textures[0].loadFromFile("car_0.png");
     this->car_textures[1].loadFromFile("car_1.png");
@@ -274,6 +280,12 @@ void Viewer::draw_car_selection(World& world, int clientId)
 
 void Viewer::draw_gameplay(World& world, int myId)
 {
+    // Setting black color as a background
+    clear(sf::Color::Black);
+
+    // Drawing map
+    sf::RenderWindow::draw(map_sprite);
+
     // Centering view to the player (client code)
     if (!wholeMapView)
     {
@@ -321,9 +333,6 @@ void Viewer::draw_gameplay(World& world, int myId)
 
         this->setView(gameView);
     }
-
-    // Setting black color as a background
-    clear(sf::Color::Black);
 
     // Drawing players
     for (auto& it : world.get_players())

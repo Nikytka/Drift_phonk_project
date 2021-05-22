@@ -7,13 +7,16 @@
 
 class Viewer : public sf::RenderWindow
 {
-    // Some standart values: 800 800, 1920 1080, 3840 2160, 5760 3240, 7680 4320
-    const int VIEWER_WIDTH = 800;
-    const int VIEWER_HEIGHT = 800;
+    // Some standart values: 800 800, 1920 1080, 3840 2160, 5760 3240, 7680 4320, 8889 5000
+    const int VIEWER_WIDTH = 1920;
+    const int VIEWER_HEIGHT = 1080;
 
     const int NUMBER_OF_CARS = 3;
     const float CAR_SCALE_FACTOR = 0.7f;
     std::map<int, sf::Texture> car_textures; // Map of car textures
+
+    sf::Texture map_texture;
+    sf::Sprite map_sprite;
 
     bool wholeMapView = false;
 
