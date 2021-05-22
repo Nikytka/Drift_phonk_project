@@ -45,5 +45,7 @@ public:
 
     void update(float dt); // Updating world
 
+    void check_col_build(Player &player); // Cheking collisions with buildings
+
     void update_clients(); // Synchronizing with all clients (sending up-to-date data from server)
 };

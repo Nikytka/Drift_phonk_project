@@ -4,9 +4,10 @@
 
 const float PI = 3.141592;
 
-const float forw_acc = 5;
-const float back_acc = 3.5;
+const float forw_acc = 3;
+const float back_acc = 2;
 const float max_vel_abs = 2000;
+const float coll_koef = 0.1f;
 
 Server::Server(int port, World& world) :
     port(port),
@@ -309,6 +310,9 @@ void Server::update(float dt)
       
         if ((0 < it.second.get_pos().x) && (it.second.get_pos().x < world.get_size().x) && (0 < it.second.get_pos().y) && (it.second.get_pos().y < world.get_size().y))
         {
+
+            check_col_build(it.second);
+
             if (it.second.get_gear() != 0)
             {
                 
@@ -378,6 +382,9 @@ void Server::update(float dt)
                 }
             
         }
+
+        
+
         // On the left border
         if (it.second.get_pos().x <= 0)
         {
@@ -385,7 +392,7 @@ void Server::update(float dt)
             new_pos.x = 0.0f;
             new_pos.y = it.second.get_pos().y;
             it.second.set_pos(new_pos);
-            velocity.x = -it.second.get_vel().x;
+            velocity.x = -coll_koef * it.second.get_vel().x;
             velocity.y = it.second.get_vel().y;
 
         }
@@ -397,7 +404,7 @@ void Server::update(float dt)
             new_pos.x = world.get_size().x;
             new_pos.y = it.second.get_pos().y;
             it.second.set_pos(new_pos);
-            velocity.x = -it.second.get_vel().x;
+            velocity.x = -coll_koef * it.second.get_vel().x;
             velocity.y = it.second.get_vel().y;
         }
 
@@ -408,7 +415,7 @@ void Server::update(float dt)
             new_pos.y = 0.0f;
             new_pos.x = it.second.get_pos().x;
             it.second.set_pos(new_pos);
-            velocity.y = -it.second.get_vel().y;
+            velocity.y = -coll_koef * it.second.get_vel().y;
             velocity.x = it.second.get_vel().x;
         }
         
@@ -419,7 +426,7 @@ void Server::update(float dt)
             new_pos.x = it.second.get_pos().x;
             new_pos.y = world.get_size().y;
             it.second.set_pos(new_pos);
-            velocity.y = -it.second.get_vel().y;
+            velocity.y = -coll_koef * it.second.get_vel().y;
             velocity.x = it.second.get_vel().x;
         }      
 
@@ -453,6 +460,80 @@ void Server::update(float dt)
     for (auto& it : world.get_players())
     {
         it.second.update(dt);
+    }
+}
+
+void Server::check_col_build(Player &player)
+{
+    if (player.get_pos().y >= 3290 && player.get_pos().y <= 4133 && player.get_pos().x >= 2735 && player.get_pos().x <= 2900)
+    {
+        player.set_pos({ 2735, player.get_pos().y });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 3270 && player.get_pos().y <= 3370 && player.get_pos().x >= 2735 && player.get_pos().x <= 3056)
+    {
+        player.set_pos({ player.get_pos().x, 3270 });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 4100 && player.get_pos().y <= 4195 && player.get_pos().x >= 2780 && player.get_pos().x <= 3795)
+    {
+        player.set_pos({ player.get_pos().x, 4195 });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 3749 && player.get_pos().y <= 4085 && player.get_pos().x >= 3756 && player.get_pos().x <= 3827)
+    {
+        player.set_pos({ 3827, player.get_pos().y });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 3509 && player.get_pos().y <= 3574 && player.get_pos().x >= 3239 && player.get_pos().x <= 4937)
+    {
+        player.set_pos({ player.get_pos().x, 3574 });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 200 && player.get_pos().y <= 354 && player.get_pos().x >= 5030 && player.get_pos().x <= 5080)
+    {
+        player.set_pos({ 5030, player.get_pos().y });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 123 && player.get_pos().y <= 177 && player.get_pos().x >= 5100 && player.get_pos().x <= 6424)
+    {
+        player.set_pos({ player.get_pos().x, 123 });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 200 && player.get_pos().y <= 330 && player.get_pos().x >= 6480 && player.get_pos().x <= 6521)
+    {
+        player.set_pos({ 6521, player.get_pos().y });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 1590 && player.get_pos().y <= 1640 && player.get_pos().x >= 2916 && player.get_pos().x <= 4062)
+    {
+        player.set_pos({ player.get_pos().x, 1640 });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 1395 && player.get_pos().y <= 2555 && player.get_pos().x >= 4160 && player.get_pos().x <= 4240)
+    {
+        player.set_pos({ 4160, player.get_pos().y });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 2613 && player.get_pos().y <= 2654 && player.get_pos().x >= 3239 && player.get_pos().x <= 3430)
+    {
+        player.set_pos({ player.get_pos().x, 2654 });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 2429 && player.get_pos().y <= 2620 && player.get_pos().x >= 3206 && player.get_pos().x <= 3250)
+    {
+        player.set_pos({ 3206, player.get_pos().y });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 2387 && player.get_pos().y <= 2439 && player.get_pos().x >= 3239 && player.get_pos().x <= 3430)
+    {
+        player.set_pos({ player.get_pos().x, 2387 });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
+    }
+    if (player.get_pos().y >= 2429 && player.get_pos().y <= 2620 && player.get_pos().x >= 3420 && player.get_pos().x <= 3470)
+    {
+        player.set_pos({ 3470, player.get_pos().y });
+        player.set_vel({ coll_koef * player.get_vel().x, coll_koef * player.get_vel().y });
     }
 }
 

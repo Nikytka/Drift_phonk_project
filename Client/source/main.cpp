@@ -96,6 +96,7 @@ int main()
         // Gameplay scene
         if (world.GetScene() == Scene::Gameplay)
         {
+
             client.events_gameplay(viewer);
 
             idle_sample.setVolume(100);
