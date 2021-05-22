@@ -42,7 +42,7 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(1920, 1
         pos.y = float(VIEWER_HEIGHT) / 2.0f + float(i) * float(VIEWER_HEIGHT) * SPACE_BETWEEN_CONNECT_BUTTONS
             - float(VIEWER_HEIGHT) * float(NUMBER_OF_CONNECT_BUTTONS - 1) * SPACE_BETWEEN_CONNECT_BUTTONS / 2.0f;
         connect_textboxes[i].setPosition(pos); // Setting textbox position
-        connect_textboxes[i].setLimit(true, 10); // Textbox has limit
+        connect_textboxes[i].setLimit(true, 15); // Textbox has limit
 
         // Setting up buttons
         connect_buttons[i].setFont(font); // Setting font
