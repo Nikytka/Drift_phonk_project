@@ -428,6 +428,13 @@ void Client::events_gameplay(Viewer& viewer)
 
 void Client::events_pause(Viewer& viewer)
 {
+    // ESC to get back to lobby
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+    {
+        world.SetScene(Scene::Gameplay);
+        while (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)) {}
+    }
+
     // Changing buttons in pause scene
     // Going down
     if ((viewer.get_pause_selected_button() < (viewer.get_pause_buttons().size() - 1)) &&

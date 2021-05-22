@@ -348,17 +348,40 @@ void Viewer::draw_gameplay(World& world, int myId)
         sf::RenderWindow::draw(player_model); // Draw
     }
 
-    sf::RenderWindow::draw(hudSpeed); // Draw speed hud
-    sf::RenderWindow::draw(hudGear); // Draw gear hud
+    if (wholeMapView == false)
+    {
+        sf::RenderWindow::draw(hudSpeed); // Draw speed hud
+        sf::RenderWindow::draw(hudGear); // Draw gear hud
+    }
 
     // Displaying
     display();
 }
 
-void Viewer::draw_pause()
+void Viewer::draw_pause(World& world, int myId)
 {
     // Setting black color as a background
     clear(sf::Color::Black);
+
+    sf::View gameView(sf::FloatRect(0.0f, 0.0f, VIEWER_WIDTH, VIEWER_HEIGHT)); // Creating a rectangle
+    gameView.setCenter(world.get_players()[myId].get_pos()); // Centering to player
+
+    this->setView(gameView);
+
+    float total_menu_height = (NUMBER_OF_PAUSE_BUTTONS - 1) * VIEWER_HEIGHT * 0.1f;
+    for (int i = 0; i < NUMBER_OF_PAUSE_BUTTONS; i++)
+    {
+        total_menu_height += pause_buttons[i].getGlobalBounds().height;
+    }
+
+    for (int i = 0; i < NUMBER_OF_PAUSE_BUTTONS; i++)
+    {
+        sf::Vector2f pos;
+        pos.x = world.get_players()[myId].get_pos().x;
+        pos.y = world.get_players()[myId].get_pos().y + float(i) * float(VIEWER_HEIGHT) * 0.1f
+            - total_menu_height / 2.0f;
+        pause_buttons[i].setPosition(pos);
+    }
 
     for (auto& it : pause_buttons)
     {

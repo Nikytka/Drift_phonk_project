@@ -6,7 +6,5 @@ enum class Scene
 	Lobby,
 	CarSelection,
 	Gameplay,
-	Gameover,
 	Pause,
-	ErrorServerFull,
 };
