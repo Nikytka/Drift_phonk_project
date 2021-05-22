@@ -100,7 +100,7 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(800, 80
     hudGear.setFont(font);
     hudGear.setColor(sf::Color::White);
     hudGear.setString("1");
-    hudGear.setOrigin(hudGear.getGlobalBounds().width, hudGear.getGlobalBounds().height);
+    hudGear.setOrigin(0.0f, hudGear.getGlobalBounds().height);
     sf::Vector2f posGear;
     posGear.x = float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
     posGear.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
@@ -281,6 +281,18 @@ void Viewer::draw_gameplay(World& world, int myId)
         gameView.setCenter(world.get_players()[myId].get_pos()); // Centering to player
 
         this->setView(gameView);
+
+        // Setting up car speed hud position
+        sf::Vector2f posSpeed;
+        posSpeed.x = world.get_players()[myId].get_pos().x + float(VIEWER_WIDTH) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
+        posSpeed.y = world.get_players()[myId].get_pos().y + float(VIEWER_HEIGHT) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
+        hudSpeed.setPosition(posSpeed);
+
+        // Setting up car gear hud position
+        sf::Vector2f posGear;
+        posGear.x = world.get_players()[myId].get_pos().x - float(VIEWER_WIDTH) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
+        posGear.y = world.get_players()[myId].get_pos().y + float(VIEWER_HEIGHT) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
+        hudGear.setPosition(posGear);
     }
 
     // Whole world fixed view (server code)
@@ -294,6 +306,18 @@ void Viewer::draw_gameplay(World& world, int myId)
         center.x = float(World::get_size().x) / 2.0f;
         center.y = float(World::get_size().y) / 2.0f;
         gameView.setCenter(center);
+
+        // Setting up car speed hud position
+        sf::Vector2f posSpeed;
+        posSpeed.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+        posSpeed.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+        hudSpeed.setPosition(posSpeed);
+
+        // Setting up car gear hud position
+        sf::Vector2f posGear;
+        posGear.x = float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+        posGear.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+        hudGear.setPosition(posGear);
 
         this->setView(gameView);
     }
