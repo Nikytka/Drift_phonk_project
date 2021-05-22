@@ -57,7 +57,7 @@ public:
     void draw_lobby(World& world); // Draw lobby function
     void draw_car_selection(World& world, int clientId); // Draw car selection screen
     void draw_gameplay(World& world, int myId); // Draw world during the game
-    void draw_pause(); // Draw pause scene
+    void draw_pause(World& world, int myId); // Draw pause scene
 
     int get_connect_menu_size(); // Get the number of total number of buttons (including textboxes)
     int get_number_of_textboxes(); // Get the number of textboxes in the connection scene

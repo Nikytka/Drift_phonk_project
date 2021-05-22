@@ -220,7 +220,7 @@ int main()
         {
             viewer.handleEvents();
             client.events_pause(viewer);
-            viewer.draw_pause();
+            viewer.draw_pause(world, client.id());
         }
     }
 
