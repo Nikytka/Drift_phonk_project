@@ -74,7 +74,7 @@ void Server::receive()
                         std::lock_guard<std::mutex> guard(newPlayerMutex);
 
                         // Setting random player spawn position
-                        sf::Vector2f new_pos = world.get_random_pos();
+                        sf::Vector2f new_pos = { 7022,1351 };
                         world.get_players()[this->currentPlayerId].set_pos(new_pos);
 
                         // Adding new client's socket
