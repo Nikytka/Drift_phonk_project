@@ -37,6 +37,8 @@ public:
 
     void change_gear(); // Notify server about player gear change
 
+    void change_score(); // Notify server about changing player score
+
     int id() const; // Get client id
     
     bool isRunning() const; // Is client running

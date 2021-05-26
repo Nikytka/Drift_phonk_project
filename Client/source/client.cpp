@@ -114,15 +114,16 @@ void Client::recieve()
 
                     for (int i = 0; i < n; ++i)
                     {
-                        int index; // Player id
+                        int index, score; // Player id
                         float angle;
                         sf::Vector2f pos, v; // Positon and velocity from server
 
-                        packet >> index >> pos.x >> pos.y >> v.x >> v.y >> angle;
+                        packet >> index >> pos.x >> pos.y >> v.x >> v.y >> angle >> score;
 
                         world.get_players()[index].set_pos(pos); // Updating position for players
                         world.get_players()[index].set_vel(v); // Updating velocity for players
-                        world.get_players()[index].set_angle(angle); // Updating car angle 
+                        world.get_players()[index].set_angle(angle); // Updating car angle
+                        world.get_players()[index].set_score(score); // Updating drift score for players
                     }
                 }
 
@@ -200,6 +201,25 @@ void Client::change_gear()
 
     // Creating a packet for sending controls
     packet << Message::Gear_change << clientId << gear;
+
+    // Sending packet
+    if (socket.send(packet) != sf::Socket::Done)
+    {
+        std::cout << "Can't send movement to server\n";
+    }
+
+}
+
+void Client::change_score()
+{
+    // Creating a packet
+    sf::Packet packet;
+
+    // The client's player gearbox controls 
+    int score = world.get_players()[id()].get_score();
+
+    // Creating a packet for sending controls
+    packet << Message::Score_change << clientId << score;
 
     // Sending packet
     if (socket.send(packet) != sf::Socket::Done)

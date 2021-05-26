@@ -65,6 +65,8 @@ int main()
 
     float prevgearControls = 0; // Previous player gear controls
 
+    int prevScore = 0; // Previous player drift score
+
     bool gear_change = true;
 
     // Main cycle
@@ -135,6 +137,9 @@ int main()
             // Current player gear controls
             float currgearControls;
 
+            // Current player drift score
+            int currScore;
+
             currgearControls = controls_arrows();
 
             // Changing player's velocity to new velocity
@@ -157,6 +162,7 @@ int main()
                 if (abs(angle - acs) > 30 && abs(angle - acs) < 330 && abs(fmod(angle + 180, 360) - acs) > 30 && abs(fmod(angle + 180, 360) - acs) < 330) {
                     def_samples[j1].setVolume(0);
                     ph_samples[j2].setVolume(80);
+                    world.get_players()[client.id()].add_score();
                 }
 
                 else {
@@ -168,6 +174,8 @@ int main()
                 def_samples[j1].setVolume(40);
                 ph_samples[j2].setVolume(0);
             }
+
+            currScore = world.get_players()[client.id()].get_score();
 
             if (world.get_players()[client.id()].get_controls().y < 0)
             {
@@ -186,6 +194,13 @@ int main()
             {
                 client.notify_server();
                 prevControls = currControls;
+            }
+
+            if (currScore != prevScore)
+            {
+                client.change_score();
+                prevScore = currScore;
+
             }
 
             if (currgearControls >=0 && world.get_players()[client.id()].get_gear() != 5 || currgearControls <=0 && world.get_players()[client.id()].get_gear() != -1) {
@@ -207,6 +222,7 @@ int main()
             // Updating viewer hud
             viewer.updateHudSpeed(world.get_players()[client.id()].getAbsoluteSpeed());
             viewer.updateHudGear(world.get_players()[client.id()].get_gear());
+            viewer.updateHudScore(world.get_players()[client.id()].get_score());
 
             // Restarting clock and updating world
             const auto dt = gameClock.restart();

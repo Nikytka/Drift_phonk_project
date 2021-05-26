@@ -25,6 +25,8 @@ class Player
 
     int gear = 1; // Number of gear
 
+    int score = 0; // Player drift score
+
     float gearbox_controls; // Current player gear controls
 
 public:
@@ -67,6 +69,10 @@ public:
     int get_gear(); // Get current gear
     void set_gear(int); // Set gear
     void add_gear(float); // Add gear
+
+    int get_score(); // Get current score
+    void add_score(); // Add drift score
+    void set_score(int); // Set drift score
 
     std::string getNickname(); // Get player nickname
     void setNickname(std::string name); // Set player nickname

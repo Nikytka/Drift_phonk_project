@@ -223,6 +223,16 @@ void Server::process_packets()
             dirty = true;
         }
 
+        // Drift score change packet processing
+        if (messageType == Message::Score_change)
+        {
+            int score; // Recieved score 
+            packet >> clientId >> score; // Data from packet
+            world.get_players()[clientId].set_score(score); // Updating player drift score
+
+            dirty = true;
+        }
+
         // Processing disconnect packets
         if (messageType == Message::ClientDisconnect)
         {
@@ -312,6 +322,17 @@ void Server::update(float dt)
         {
 
             check_col_build(it.second);
+            if (it.second.get_vel().y <= 0)
+                acs = acos(-it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2))) * 180 / PI;
+            else
+                acs = acos(it.second.get_vel().x / sqrt(pow(it.second.get_vel().x, 2) + pow(it.second.get_vel().y, 2))) * 180 / PI + 180;
+            if (fmod(it.second.get_angle(), 360) >= 0)
+                angle = fmod(it.second.get_angle(), 360);
+            else
+                angle = 360.0f - fmod(-it.second.get_angle(), 360);
+            if (abs(angle - acs) > 30 && abs(angle - acs) < 330 && abs(fmod(angle + 180, 360) - acs) > 30 && abs(fmod(angle + 180, 360) - acs) < 330) {
+                it.second.add_score();
+            }
 
             if (it.second.get_gear() != 0)
             {
@@ -553,7 +574,7 @@ void Server::update_clients()
     {
         // Players position and velocity to packet
         toSend << elem.first << elem.second.get_pos().x << elem.second.get_pos().y <<
-            elem.second.get_vel().x << elem.second.get_vel().y << elem.second.get_angle();
+            elem.second.get_vel().x << elem.second.get_vel().y << elem.second.get_angle() << elem.second.get_score();
     }
 
     // Pushing server elapsed time to packet

@@ -113,6 +113,17 @@ Viewer::Viewer(const std::string& name) : sf::RenderWindow(sf::VideoMode(1920, 1
     hudGear.setPosition(posGear);
     hudGear.setString(""); // Setting to none, so it does no show up on server viewer
 
+    // Setting up car drift score (gameplay hud)
+    hudScore.setFont(font);
+    hudScore.setColor(sf::Color::White);
+    hudScore.setString("0");
+    hudScore.setOrigin(hudSpeed.getGlobalBounds().width, hudScore.getGlobalBounds().height);
+    sf::Vector2f posScore;
+    posScore.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+    posScore.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+    hudScore.setPosition(posScore);
+    hudScore.setString(""); // Setting to none, so it does no show up on server viewer
+
     // Setting up pause buttons
     for (int i = 0; i < NUMBER_OF_PAUSE_BUTTONS; i++)
     {
@@ -305,6 +316,12 @@ void Viewer::draw_gameplay(World& world, int myId)
         posGear.x = world.get_players()[myId].get_pos().x - float(VIEWER_WIDTH) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
         posGear.y = world.get_players()[myId].get_pos().y + float(VIEWER_HEIGHT) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
         hudGear.setPosition(posGear);
+
+        // Setting up car drift score hud position
+        sf::Vector2f posScore;
+        posScore.x = world.get_players()[myId].get_pos().x - float(VIEWER_WIDTH) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
+        posScore.y = world.get_players()[myId].get_pos().y - float(VIEWER_HEIGHT) * (0.5f - SPACE_BETWEEN_HUD_ITEMS);
+        hudScore.setPosition(posScore);
     }
 
     // Whole world fixed view (server code)
@@ -331,6 +348,12 @@ void Viewer::draw_gameplay(World& world, int myId)
         posGear.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
         hudGear.setPosition(posGear);
 
+        // Setting up car drift score hud position
+        sf::Vector2f posScore;
+        posScore.x = float(VIEWER_WIDTH) - float(VIEWER_WIDTH) * SPACE_BETWEEN_HUD_ITEMS;
+        posScore.y = float(VIEWER_HEIGHT) - float(VIEWER_HEIGHT) * SPACE_BETWEEN_HUD_ITEMS;
+        hudScore.setPosition(posScore);
+
         this->setView(gameView);
     }
 
@@ -352,6 +375,7 @@ void Viewer::draw_gameplay(World& world, int myId)
     {
         sf::RenderWindow::draw(hudSpeed); // Draw speed hud
         sf::RenderWindow::draw(hudGear); // Draw gear hud
+        sf::RenderWindow::draw(hudScore); // Draw drift score hud
     }
 
     // Displaying
@@ -499,6 +523,16 @@ void Viewer::updateHudGear(int x)
     {
         hudGear.setString(str);
     }
+}
+
+void Viewer::updateHudScore(int x)
+{
+    std::stringstream ss;
+    ss << int(x);
+    std::string str = ss.str();
+
+    hudScore.setString("Drift score: " + str);
+
 }
 
 bool Viewer::ifWholeMapView()

@@ -41,6 +41,7 @@ class Viewer : public sf::RenderWindow
     const float SPEED_REDUCE_FACTOR = 17.0f; // A number by which the hud speed is reduced (for reality)
     sf::Text hudSpeed; // Car speed in gameplay scene
     sf::Text hudGear; // Car gear in gameplay scene
+    sf::Text hudScore; // Car drift score in gameplay scene
 
     // PAUSE SCENE PARAMETERS
     const int NUMBER_OF_PAUSE_BUTTONS = 2; // Number of buttons in pause scene
@@ -78,6 +79,7 @@ public:
 
     void updateHudSpeed(float x); // Set new speed in gameplay scene hud
     void updateHudGear(int x); // Set new gear in gameplay scene hud
+    void updateHudScore(int x); // Set new score in gameplay scene hud
 
     bool ifWholeMapView(); // If the whole map view right now
     void setWholeMapView(bool x); // Set whole map view

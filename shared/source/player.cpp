@@ -134,6 +134,21 @@ void Player::add_gear(float gear_controls)
 	this->gear += gear_controls;
 }
 
+int Player::get_score()
+{
+	return this->score;
+}
+
+void Player::add_score()
+{
+	this->score += 2;
+}
+
+void Player::set_score(int score)
+{
+	this->score = score;
+}
+
 std::string Player::getNickname()
 {
 	return this->nickname;

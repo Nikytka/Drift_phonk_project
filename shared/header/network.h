@@ -14,5 +14,6 @@ enum Message
 	PlayerNicknames,
 	PlayerCarSelected,
 	ErrorServerFull,
-	Gear_change
+	Gear_change,
+	Score_change
 };
